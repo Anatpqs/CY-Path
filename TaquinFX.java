@@ -1,9 +1,12 @@
 package application;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -11,35 +14,44 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TaquinFX extends Application {
-	
+
 	private static final int GRID_SIZE = 3;
     private static final int TILE_SIZE = 100;
 
     private int[][] grille = new int[GRID_SIZE][GRID_SIZE];
     private GridPane gridPane = new GridPane();
+    private Scene scene;
+
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Jeu du Taquin");
-
+        
         initializeGrille();
         shuffleGrille();
-
+     
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                Button button = new Button(Integer.toString(grille[row][col]));
-                button.setPrefSize(TILE_SIZE, TILE_SIZE);
-                button.setOnAction(e -> moveTile(button));
-
-                gridPane.add(button, col, row);
+            	if(grille[row][col] != 0) {
+	            	Button button = new Button(Integer.toString(grille[row][col]));
+	                button.setPrefSize(TILE_SIZE, TILE_SIZE);
+	                //button.getStyleClass().add("case");
+	                button.setOnAction(e -> moveTile(button));
+	
+	                gridPane.add(button, col, row);
+            	}
             }
         }
+        
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
-        Scene scene = new Scene(gridPane);
+        scene = new Scene(gridPane);
+        scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+        //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -130,7 +142,7 @@ public class TaquinFX extends Application {
             int temp = grille[row][col];
             grille[row][col] = 0;
             grille[emptyRow][emptyCol] = temp;
-            
+
             // Mettre à jour les positions des boutons
             gridPane.getChildren().remove(button);
             gridPane.add(button, emptyCol, emptyRow);
@@ -144,6 +156,52 @@ public class TaquinFX extends Application {
             System.out.println("Déplacement invalide !");
         }
     }
+    
+    private void handleKeyPress(KeyCode keyCode) {
+        Button button = getSelectedButton();
+        if (button != null) {
+            int row = GridPane.getRowIndex(button);
+            int col = GridPane.getColumnIndex(button);
+
+            if (keyCode == KeyCode.UP && row > 0 && grille[row - 1][col] == 0) {
+                moveTile((Button) getNodeByRowColumnIndex(row - 1, col));
+            } else if (keyCode == KeyCode.DOWN && row < GRID_SIZE - 1 && grille[row + 1][col] == 0) {
+                moveTile((Button) getNodeByRowColumnIndex(row + 1, col));
+            } else if (keyCode == KeyCode.LEFT && col > 0 && grille[row][col - 1] == 0) {
+                moveTile((Button) getNodeByRowColumnIndex(row, col - 1));
+            } else if (keyCode == KeyCode.RIGHT && col < GRID_SIZE - 1 && grille[row][col + 1] == 0) {
+                moveTile((Button) getNodeByRowColumnIndex(row, col + 1));
+            }
+        }
+    }
+
+    private Node getNodeByRowColumnIndex(final int row, final int column) {
+        Node result = null;
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+
+    private Button getSelectedButton() {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Button) {
+                Button button = (Button) node;
+                if (button.isFocused()) {
+                    return button;
+                }
+            }
+        }
+        return null;
+    }
+    
 
     private boolean estResolu() {
         int value = 1;
@@ -158,3 +216,5 @@ public class TaquinFX extends Application {
         return true;
     }
 }
+
+                   
