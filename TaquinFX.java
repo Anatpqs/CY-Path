@@ -12,10 +12,11 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Random;
+import javafx.scene.layout.Pane;
 
 public class TaquinFX extends Application {
 
-	private static final int GRID_SIZE = 3;
+	private static final int GRID_SIZE = 4;
     private static final int TILE_SIZE = 100;
 
     private int[][] grille = new int[GRID_SIZE][GRID_SIZE];
@@ -28,29 +29,33 @@ public class TaquinFX extends Application {
         primaryStage.setTitle("Jeu du Taquin");
         
         initializeGrille();
-        shuffleGrille();
+        shuffleGrille1();
      
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-            	if(grille[row][col] != 0) {
+            	if(grille[row][col] != 0 && grille[row][col] != -1){
 	            	Button button = new Button(Integer.toString(grille[row][col]));
 	                button.setPrefSize(TILE_SIZE, TILE_SIZE);
 	                //button.getStyleClass().add("case");
 	                button.setOnAction(e -> moveTile(button));
 	
 	                gridPane.add(button, col, row);
-            	}
+            	} else if(grille[row][col] == -1){
+                    Pane emptyPane = new Pane();
+                    emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
+                    emptyPane.getStyleClass().add("case-vide");
+                    gridPane.add(emptyPane, col, row);
+                }
+            	
             }
         }
         
 
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(5);
-        gridPane.setVgap(5);
+        gridPane.setAlignment(Pos.CENTER);   
 
         scene = new Scene(gridPane);
         scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
-        //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -65,9 +70,35 @@ public class TaquinFX extends Application {
             }
         }
         grille[GRID_SIZE - 1][GRID_SIZE - 1] = 0; // Case vide représentée par 0
+        grille[0][0] = -1; // Case inexistante par -1
     }
 
-    private void shuffleGrille() {
+    
+    private void shuffleGrille1() {
+        Random rand = new Random();
+        int numSwaps = 100; // Nombre d'échanges de nombres
+
+        for (int i = 0; i < numSwaps; i++) {
+            int row1, col1, row2, col2;
+
+            do {
+                row1 = rand.nextInt(GRID_SIZE);
+                col1 = rand.nextInt(GRID_SIZE);
+            } while (grille[row1][col1] == -1);
+
+            do {
+                row2 = rand.nextInt(GRID_SIZE);
+                col2 = rand.nextInt(GRID_SIZE);
+            } while (grille[row2][col2] == -1);
+
+            // Échanger les nombres des deux positions
+            int temp = grille[row1][col1];
+            grille[row1][col1] = grille[row2][col2];
+            grille[row2][col2] = temp;
+            }
+    }
+    
+    private void shuffleGrille2() {
         Random rand = new Random();
         int numMoves = 100; // Nombre de mouvements de mélange
 
@@ -88,16 +119,16 @@ public class TaquinFX extends Application {
 
             // Choisir aléatoirement une tuile adjacente à la case vide
             ArrayList<Pair<Integer, Integer>> adjacentTiles = new ArrayList<>();
-            if (emptyRow > 0) {
+            if (emptyRow > 0 && grille[emptyRow - 1][emptyCol] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow - 1, emptyCol));
             }
-            if (emptyRow < GRID_SIZE - 1) {
+            if (emptyRow < GRID_SIZE - 1 && grille[emptyRow + 1][emptyCol] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow + 1, emptyCol));
             }
-            if (emptyCol > 0) {
+            if (emptyCol > 0 && grille[emptyRow][emptyCol - 1] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow, emptyCol - 1));
             }
-            if (emptyCol < GRID_SIZE - 1) {
+            if (emptyCol < GRID_SIZE - 1 && grille[emptyRow][emptyCol + 1] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow, emptyCol + 1));
             }
 
@@ -107,12 +138,16 @@ public class TaquinFX extends Application {
             int tileRow = randomTile.getKey();
             int tileCol = randomTile.getValue();
 
-            // Échanger la tuile adjacente avec la case vide
-            int temp = grille[tileRow][tileCol];
-            grille[tileRow][tileCol] = 0;
-            grille[emptyRow][emptyCol] = temp;
+            // Échanger la tuile adjacente avec la case vide, en évitant les tuiles avec une valeur de -1
+            if (grille[tileRow][tileCol] != -1) {
+                int temp = grille[tileRow][tileCol];
+                grille[tileRow][tileCol] = 0;
+                grille[emptyRow][emptyCol] = temp;
+            }
         }
     }
+
+    
 
 
     private void moveTile(Button button) {
