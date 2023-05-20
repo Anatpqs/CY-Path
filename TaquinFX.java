@@ -113,11 +113,12 @@ public class TaquinFX extends Application {
             grille[row2][col2] = temp;
             }
     }
-     private Boolean solvability( ) {
+          private Boolean solvability( ) {
     	int tile_number,permutation,empty_distance,column_empty_ini,row_empty_ini,column_empty_final,row_empty_final=0;
     	
     	for (int row=0;row<GRID_SIZE;row++) {
     		for (int column=0;column<GRID_SIZE;column++) {
+			//browse the array to find the empty tile the last number tile and the number of tile 
     			if (grille[row][column]==0) {
     				column_empty_ini=column;
     				row_empty_ini=row;
@@ -133,9 +134,10 @@ public class TaquinFX extends Application {
     	}
     	empty_distance=Math.abs(column_empty_ini-column_empty_final)+Math.abs(row_empty_ini-row_empty_final);
     	int permutaion_row,permutation_column,permutation_column_2,permutaion_row_2;
-    	while(grille!=soultion) { //solution est un tableau de tableau contenant le taquun resolue
+    	while(grille!=soultion) { //solution is an array of array wich contain the solution of the taquin
     		for (int row=0;row<GRID_SIZE;row++) {
     			for (int column=0;column<GRID_SIZE;column++) {
+				//count the number of permutation between solution and the initial state
     				if (grille[row][column]==tile_number) {
         				permutaion_row=row;
         				permutation_column=column;
@@ -146,12 +148,14 @@ public class TaquinFX extends Application {
     				}
     			}
     		}
+		//count the distance between initial state and solution 
     		grille[permutaion_row][permutation_column]=grille[permutaion_row_2][permutation_column_2];
     		grille[permutaion_row_2][permutation_column_2]=tile_number;
     		tile_number-=1;
     		permutation+=1;
     	}
     	if(permutation%2==empty_distance%2) {
+		//the parity give the solvability
     		return true;
     	}
     	else return false;
