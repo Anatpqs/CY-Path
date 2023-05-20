@@ -474,8 +474,7 @@ public class TaquinFX extends Application {
     	 int delay = 500; // Durée de la pause entre chaque déplacement (en millisecondes)
     	 SequentialTransition sequentialTransition = new SequentialTransition();
     
-    	int emptyRow = -1;
-    	int emptyCol = -1;
+    
     	//On cherche où la case vide s'est déplacé à l'état i+1
     	int emptyRow2= -1;
     	int emptyCol2 = -1;
@@ -483,16 +482,6 @@ public class TaquinFX extends Application {
 
     	for(int i=0;i<path.size()-1;i++)
     	{   
-    		  //Parcours de la grille à l'état i
-    		    for (int row = 0; row < path.get(i).length; row++) {
-        		    for (int col = 0; col < path.get(i).length; col++) {
-        		    	if (path.get(i)[row][col] == 0) {
-        		            emptyRow = row;
-        		            emptyCol = col;
-        		            break;
-        		        }
-        		    }
-    		    }
     		  //Parcours de la grille à l'état i+1
     		    for (int row2 = 0; row2 < path.get(i+1).length; row2++) {
         		    for (int col2 = 0; col2 < path.get(i+1).length; col2++) {
@@ -508,8 +497,7 @@ public class TaquinFX extends Application {
     		    final int finalEmptyCol= emptyCol2;
     		    PauseTransition pause = new PauseTransition(Duration.millis(delay));
     		    
-    		    
-    		 
+    		   
     	        pause.setOnFinished(evt -> {
     		    	moveTile((Button) getNodeByRowColumnIndex(finalEmptyRow, finalEmptyCol));
     		    });
