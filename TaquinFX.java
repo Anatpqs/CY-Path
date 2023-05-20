@@ -14,6 +14,17 @@ import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.layout.Pane;
 
+
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.util.Duration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+
 public class TaquinFX extends Application {
 
 	private static final int GRID_SIZE = 4;
@@ -29,7 +40,7 @@ public class TaquinFX extends Application {
         primaryStage.setTitle("Jeu du Taquin");
         
         initializeGrille();
-        shuffleGrille1();
+        shuffleGrille2();
      
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
@@ -50,6 +61,11 @@ public class TaquinFX extends Application {
             }
         }
         
+	   // Boutton pour résoudre
+           Button button_resolve = new Button("Resolve");
+           gridPane.add(button_resolve,0,GRID_SIZE+1);
+           button_resolve.setOnAction(e->resolve());
+           //Fin bouton résoudre
 
         gridPane.setAlignment(Pos.CENTER);   
 
@@ -294,6 +310,245 @@ public class TaquinFX extends Application {
         }
         return true;
     }
+	
+	 //------------------------------------------------------------------------------------------------------------------------------------------
+    
+    //Résolution suivant l'algo A*
+    private void resolve()
+    {
+    	
+    	int[][] grid_start=copyMatrix(grille);
+    	//Grille qu'on veut atteindre
+    	int[][] grid_final=new int[GRID_SIZE][GRID_SIZE];
+    	
+    	 int value = 1;
+         for (int row = 0; row < GRID_SIZE; row++) {
+             for (int col = 0; col < GRID_SIZE; col++) {
+                 grid_final[row][col] = value;
+                 value++;
+             }
+         }
+         grid_final[GRID_SIZE - 1][GRID_SIZE - 1] = 0; // Case vide représentée par 0
+         //grid_final[0][0] = -1; // Case inexistante par -1
+    
+        //Initialisation des différentes listes/dico necessaire 
+        PriorityQueue<State> list_state=new PriorityQueue<>();
+        State state1=new State(grid_start,heuristic(grid_start));
+    	list_state.add(state1);
+    	HashMap<int[][],Integer> cost = new HashMap<>();
+    	cost.put(grid_start,heuristic(grid_start));
+    	HashMap<int[][],int[][]> parent = new HashMap<>();
+    	parent.put(grid_start,null);
+    	HashSet<int[][]> visited = new HashSet<>();
+    	
+    	while(!list_state.isEmpty())
+    	
+    	{
+    		int[][] grid_temp=list_state.poll().grid;
+    		visited.add(grid_temp);
+    		
+    		if(Arrays.deepEquals(grid_final,grid_temp)) //Si on a trouvé la solution
+    		{
+    			System.out.println("RESULTAT TROUVER");
+    			//Tableau des différents états pour résoudre
+    			ArrayList<int[][]> path = new ArrayList<>();
+    	            int[][] current = grid_temp;
+    	            while (parent.containsKey(current)) {
+    	                path.add(0, current);
+    	                current = parent.get(current);
+    	            }
+    	          //Afficher le déplacelement des cases
+    	          resolve_print(path);
+    	          break;
+    		}
+    		
+    		//Liste de tous les états possible à partir de l'état où on est
+    		ArrayList<int[][]> next_state=new ArrayList<>();
+    		next_state=generateNeighbors(grid_temp);
+    		
+  
+            //Pour chaque mouvement : 
+            for(int i=0;i<next_state.size();i++)
+            {
+    
+            	int[][] newGrid=copyMatrix(next_state.get(i));
+            	//Calcul du cout avec l'heuristique
+            	int newCost=cost.get(grid_temp)+1+heuristic(newGrid);
+            	State newState =new State(newGrid,newCost);
+            
+            	if(visited.contains(newGrid))
+            	{
+            		continue;
+            	}
+            	
+            	if (cost.containsKey(newGrid)) {
+            	    int existingCost = cost.get(newGrid);
+            	    if (newCost < existingCost) {
+            	        cost.put(newGrid, newCost);
+            	        parent.put(newGrid, grid_temp);
+            	        System.out.println("test");
+            	    }
+            	} else {
+            	    cost.put(newGrid, newCost);
+            	    parent.put(newGrid, grid_temp);
+            	    list_state.add(newState);
+            	}
+            }
+    	}
+    }
+    
+    
+    public ArrayList<int[][]> generateNeighbors(int[][] grid_temp)
+    {
+    	ArrayList<int[][]> next_state=new ArrayList<>();
+		// Rechercher la case vide
+		int emptyRow=-1;
+		int emptyCol=-1;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                if (grid_temp[i][j] == 0) {
+                    emptyRow = i;
+                    emptyCol = j;
+                    break;
+                }
+            }
+        }
+       
+        //Les différents mouvements possibles
+        if (emptyRow > 0 && grid_temp[emptyRow - 1][emptyCol] != -1)
+        {
+        	//copie du tableau
+        	int[][] grid_temp2 = copyMatrix(grid_temp);
+        	
+        	// Échanger la tuile avec la case vide
+            int temp = grid_temp2[emptyRow - 1][emptyCol];
+            grid_temp2[emptyRow - 1][emptyCol] = 0;
+            grid_temp2[emptyRow][emptyCol] = temp;
+            //Ajout à la liste des possibilité
+            next_state.add(grid_temp2);
+
+        }
+        if (emptyRow < GRID_SIZE - 1 && grid_temp[emptyRow + 1][emptyCol] != -1)
+        {
+        	int[][] grid_temp3 =copyMatrix(grid_temp);
+        	
+        	// Échanger la tuile avec la case vide
+            int temp = grid_temp3[emptyRow + 1][emptyCol];
+            grid_temp3[emptyRow + 1][emptyCol] = 0;
+            grid_temp3[emptyRow][emptyCol] = temp;
+            //Ajout à la liste des possibilité
+            next_state.add(grid_temp3);
+        }
+        if (emptyCol > 0 && grid_temp[emptyRow][emptyCol - 1] != -1)
+        {
+        	int[][] grid_temp4 = copyMatrix(grid_temp);
+        	// Échanger la tuile avec la case vide
+            int temp = grid_temp4[emptyRow][emptyCol - 1];
+            grid_temp4[emptyRow][emptyCol - 1] = 0;
+            grid_temp4[emptyRow][emptyCol] = temp;
+            //Ajout à la liste des possibilité
+            next_state.add(grid_temp4);
+        }
+        if (emptyCol < GRID_SIZE - 1 && grid_temp[emptyRow][emptyCol + 1] != -1)
+        {
+        	int[][] grid_temp5 = copyMatrix(grid_temp);
+        	// Échanger la tuile avec la case vide
+            int temp = grid_temp5[emptyRow][emptyCol + 1];
+            grid_temp5[emptyRow][emptyCol + 1] = 0;
+            grid_temp5[emptyRow][emptyCol] = temp;
+            //Ajout à la liste des possibilité
+            next_state.add(grid_temp5);
+        }
+        
+        return next_state;
+    }
+    
+    
+    
+    private void resolve_print(ArrayList<int[][]> path)
+    {
+    	 int delay = 500; // Durée de la pause entre chaque déplacement (en millisecondes)
+    	 SequentialTransition sequentialTransition = new SequentialTransition();
+    
+    	int emptyRow = -1;
+    	int emptyCol = -1;
+    	//On cherche où la case vide s'est déplacé à l'état i+1
+    	int emptyRow2= -1;
+    	int emptyCol2 = -1;
+        
+
+    	for(int i=0;i<path.size()-1;i++)
+    	{   
+    		  //Parcours de la grille à l'état i
+    		    for (int row = 0; row < path.get(i).length; row++) {
+        		    for (int col = 0; col < path.get(i).length; col++) {
+        		    	if (path.get(i)[row][col] == 0) {
+        		            emptyRow = row;
+        		            emptyCol = col;
+        		            break;
+        		        }
+        		    }
+    		    }
+    		  //Parcours de la grille à l'état i+1
+    		    for (int row2 = 0; row2 < path.get(i+1).length; row2++) {
+        		    for (int col2 = 0; col2 < path.get(i+1).length; col2++) {
+        		    	if (path.get(i+1)[row2][col2] == 0) {
+        		            emptyRow2 = row2;
+        		            emptyCol2 = col2;
+        		            break;
+        		        }
+        		    }
+    		    }
+    	//Déplacer	  
+    		    final int finalEmptyRow = emptyRow2;
+    		    final int finalEmptyCol= emptyCol2;
+    		    PauseTransition pause = new PauseTransition(Duration.millis(delay));
+    		    
+    		    
+    		 
+    	        pause.setOnFinished(evt -> {
+    		    	moveTile((Button) getNodeByRowColumnIndex(finalEmptyRow, finalEmptyCol));
+    		    });
+    	        sequentialTransition.getChildren().add(pause);
+	     }
+    	sequentialTransition.play();
+    }
+    //Fin résolution auto
+    
+    private int[][] copyMatrix(int[][] grid) {
+        int[][] newGrid = new int[GRID_SIZE][GRID_SIZE];
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                newGrid[i][j] = grid[i][j];
+            }
+        }
+        return newGrid;
+    }
+
+    // Calcul du coût d'un état en utilisant la distance de Manhattan
+    public static int heuristic(int[][] grid) {
+        int cost = 0;
+
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                int value = grid[row][col];
+
+                if (value != 0) {
+                    int targetRow = (value - 1) / GRID_SIZE;
+                    int targetCol = (value - 1) % GRID_SIZE;
+
+                    int distance = Math.abs(row - targetRow) + Math.abs(col - targetCol);
+                    cost += distance;
+                }
+            }
+        }
+
+        return cost;
+    }
+  //Fin résolution auto
+  
+  //---------------------------------------------------------------------------------------------------------------------------------------------
+	
 }
 
                    
