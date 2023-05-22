@@ -468,18 +468,26 @@ public class TaquinFX extends Application {
     }
     
     
-    
     private void resolve_print(ArrayList<int[][]> path)
     {
-    	 int delay = 500; // Durée de la pause entre chaque déplacement (en millisecondes)
+    	 int delay = 600; // Durée de la pause entre chaque déplacement (en millisecondes)
     	 SequentialTransition sequentialTransition = new SequentialTransition();
     
-    
-    	//On cherche où la case vide s'est déplacé à l'état i+1
-    	int emptyRow2= -1;
-    	int emptyCol2 = -1;
-        
+    	 //Boutton pour résolution auto ou étape par étape
+    	 Button resolve_auto=new Button("Auto");
+    	 gridPane.add(resolve_auto,1,GRID_SIZE+1);
 
+    	 Button resolve_etape=new Button(">");
+    	 gridPane.add(resolve_etape,2,GRID_SIZE+1);
+    	
+
+        //Affichage de toute la résolution auto
+    	resolve_auto.setOnAction(a->{ 
+    		
+    		//On cherche où la case vide s'est déplacé à l'état i+1
+    		int emptyRow2= -1;
+        	int emptyCol2 = -1;
+        	
     	for(int i=0;i<path.size()-1;i++)
     	{   
     		  //Parcours de la grille à l'état i+1
@@ -497,13 +505,48 @@ public class TaquinFX extends Application {
     		    final int finalEmptyCol= emptyCol2;
     		    PauseTransition pause = new PauseTransition(Duration.millis(delay));
     		    
-    		   
     	        pause.setOnFinished(evt -> {
     		    	moveTile((Button) getNodeByRowColumnIndex(finalEmptyRow, finalEmptyCol));
     		    });
     	        sequentialTransition.getChildren().add(pause);
 	     }
     	sequentialTransition.play();
+    	
+    	resolve_auto.setDisable(true);
+    	resolve_etape.setDisable(true);
+    	});
+    	
+    	//Affichage étape par étape
+    	 int[] iteration = {0};
+
+    	 resolve_etape.setOnAction(a -> {
+    	     int emptyRow2 = -1;
+    	     int emptyCol2 = -1;
+
+    	     if (iteration[0] < path.size() - 1) {
+    	         // Parcours de la grille à l'état i+1
+    	         for (int row2 = 0; row2 < path.get(iteration[0] + 1).length; row2++) {
+    	             for (int col2 = 0; col2 < path.get(iteration[0] + 1).length; col2++) {
+    	                 if (path.get(iteration[0] + 1)[row2][col2] == 0) {
+    	                     emptyRow2 = row2;
+    	                     emptyCol2 = col2;
+    	                     break;
+    	                 }
+    	             }
+    	         }
+
+    	         // Déplacer
+    	         moveTile((Button) getNodeByRowColumnIndex(emptyRow2, emptyCol2));
+
+    	         iteration[0]++;
+    	     }
+    	     else
+    	     {
+    	    	 resolve_etape.setDisable(true);
+    	    	 resolve_auto.setDisable(true);
+    	     }
+    	 });
+    
     }
     //Fin résolution auto
     
