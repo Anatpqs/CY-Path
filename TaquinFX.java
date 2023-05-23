@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
-
 public class TaquinFX extends Application {
 
 	private static final int GRID_SIZE = 3;
@@ -37,30 +36,17 @@ public class TaquinFX extends Application {
     private GridPane gridPane = new GridPane();
     private Scene scene;
     private Button melangeButton = new Button("Mélange");
+    private Button button_resolve = new Button("Resolve");
 
 
     @Override
     public void start(Stage primaryStage){
         primaryStage.setTitle("Jeu du Taquin");
-        boolean shuffleGood = false;
         
-        initializeGrille();
         
-        int[][] grilleInit = copyMatrix(grille);
-        
-        while (!shuffleGood) {
-            shuffleGrille2();
-            shuffleGood = true; // Supposons que le mélange est bon par défaut
-            for (int row = 0; row < GRID_SIZE; row++) {
-                for (int col = 0; col < GRID_SIZE; col++) {
-                    if (grilleInit[row][col] == grille[row][col] && grille[row][col] != -1) {
-                    	shuffleGood = false;
-                    }
-                }
-            }
-        }
-		        
-     
+        initializeGrille();      
+ 
+       		           
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
             	if(grille[row][col] != 0 && grille[row][col] != -1){
@@ -81,7 +67,7 @@ public class TaquinFX extends Application {
         }
         
  	   // Boutton pour résoudre
-        Button button_resolve = new Button("Resolve");
+        
         gridPane.add(button_resolve,0,GRID_SIZE+1);
         button_resolve.setOnAction(e->resolve());
 
@@ -112,10 +98,24 @@ public class TaquinFX extends Application {
         //grille[0][0] = -1; // Case inexistante par -1
     }
 
-    
+    private void shuffle() {
+    	int[][] grilleInit = copyMatrix(grille);
+    	boolean shuffleGood = false;
+        while (!shuffleGood) {
+            shuffleGrille1();
+            shuffleGood = true; // Supposons que le mélange est bon par défaut
+            for (int row = 0; row < GRID_SIZE; row++) {
+                for (int col = 0; col < GRID_SIZE; col++) {
+                    if (grilleInit[row][col] == grille[row][col] && grille[row][col] != -1) {
+                    	shuffleGood = false;
+                    }
+                }
+            }
+        }
+    }
     private void shuffleGrille1(){
         Random rand = new Random();
-        int numSwaps = 100; // Nombre d'échanges de nombres
+        int numSwaps = 20; // Nombre d'échanges de nombres
         
         coups = 0; // Réinitialise le compteur de coups à zéro
         coupsLabel.setText("Coups : 0"); // Met à jour le texte de l'étiquette
@@ -146,7 +146,10 @@ public class TaquinFX extends Application {
     
     private void shuffleGrille2() {
         Random rand = new Random();
-        int numMoves = 100; // Nombre de mouvements de mélange
+        int numMoves = 30; // Nombre de mouvements de mélange
+        
+        coups = 0; // Réinitialise le compteur de coups à zéro
+        coupsLabel.setText("Coups : 0"); // Met à jour le texte de l'étiquette
 
         for (int i = 0; i < numMoves; i++) {
             int emptyRow = -1;
@@ -312,7 +315,7 @@ public class TaquinFX extends Application {
     }
     
     private void refreshUI() {
-    	shuffleGrille1();
+    	shuffle();
     	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
 
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -334,6 +337,7 @@ public class TaquinFX extends Application {
         
         gridPane.add(melangeButton, GRID_SIZE - 1, GRID_SIZE);
         gridPane.add(coupsLabel, 0, GRID_SIZE); // Ajoutez-le à la dernière ligne de la grille
+        gridPane.add(button_resolve,0,GRID_SIZE+1);
     }
     
   //Résolution suivant l'algo A*
