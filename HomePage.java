@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 
 public class HomePage extends Application {
     
+	public static int numberMove = 0;
     GridPane homepage = new GridPane();
     Scene scene1 = new Scene(homepage,425,700);
 
@@ -101,7 +102,7 @@ public class HomePage extends Application {
             GridPane.setColumnSpan(nbTurns, 3); // Spécifie que nbTurns occupe 3 colonnes
             homepage.add(nbTurns, 0, 5);
             
-            Text NumberTurns = new Text(20, 100, "0");
+            Text NumberTurns = new Text(20, 100, Integer.toString(numberMove));
             NumberTurns.setFont(new Font(75));
             NumberTurns.setFill(Color.WHITE);
             GridPane.setHalignment(NumberTurns, HPos.CENTER);
