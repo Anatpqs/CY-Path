@@ -345,17 +345,14 @@ public class TaquinFX {
     }
     
 
-    private static boolean estResolu() {
-        int value = 1;
-        for (int row = 0; row < NbrRow; row++) {
-            for (int col = 0; col < NbrCol; col++) {
-                if (grille[row][col] != value % (NbrRow * NbrCol)) {
-                    return false;
-                }
-                value++;
-            }
-        }
-        return true;
+  
+    private boolean estResolu() {
+    	int[][] grid_final= grid_level;
+    	if(Arrays.deepEquals(grille,grid_final))
+    	{
+    		return true;
+    	}
+    	return false;
     }
     
     private static int[][] copyMatrix(int[][] grid) {
