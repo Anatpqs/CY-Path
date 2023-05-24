@@ -389,9 +389,9 @@ public class TaquinFX {
         gridPane.add(button_resolve,0,NbrCol+1);
     }
     
-  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+   //--------------------------------------------------------------------------------------------------------------------------------------------------------
   //Résolution suivant l'algo A*
-    private static void resolve()
+    private void resolve()
     {
     	
     	int[][] grid_start=copyMatrix(grille);
@@ -422,9 +422,11 @@ public class TaquinFX {
     			ArrayList<int[][]> path = new ArrayList<>();
     	            int[][] current = grid_temp;
     	            while (parent.containsKey(current)) {
+    	        
     	                path.add(0, current);
     	                current = parent.get(current);
     	            }
+    	           
     	          //Afficher le déplacelement des cases
     	          resolve_print(path);
     	          break;
@@ -432,7 +434,7 @@ public class TaquinFX {
     		
     		//Liste de tous les états possible à partir de l'état où on est
     		ArrayList<int[][]> next_state=new ArrayList<>();
-    		next_state=generateNeighbors(grid_temp);
+    		next_state=generateNeighbors(grid_temp, visited);
     		
   
             //Pour chaque mouvement : 
@@ -440,14 +442,17 @@ public class TaquinFX {
             {
     
             	int[][] newGrid=copyMatrix(next_state.get(i));
-            	//Calcul du cout avec l'heuristique
-            	int newCost=cost.get(grid_temp)+1+heuristic(newGrid);
-            	State newState =new State(newGrid,newCost);
-            
+            	
             	if(visited.contains(newGrid))
             	{
             		continue;
             	}
+            	
+            	
+            	//Calcul du cout avec l'heuristique
+            	int newCost=cost.get(grid_temp)+1+heuristic(newGrid);
+            	State newState =new State(newGrid,newCost);
+            
             	
             	if (cost.containsKey(newGrid)) {
             	    int existingCost = cost.get(newGrid);
@@ -466,7 +471,7 @@ public class TaquinFX {
     }
     
     
-    public static ArrayList<int[][]> generateNeighbors(int[][] grid_temp)
+    public ArrayList<int[][]> generateNeighbors(int[][] grid_temp,HashSet<int[][]> visited)
     {
     	ArrayList<int[][]> next_state=new ArrayList<>();
 		// Rechercher la case vide
@@ -487,6 +492,8 @@ public class TaquinFX {
         {
         	//copie du tableau
         	int[][] grid_temp2 = copyMatrix(grid_temp);
+        	if(!visited.contains(grid_temp2))
+        	{
         	
         	// Échanger la tuile avec la case vide
             int temp = grid_temp2[emptyRow - 1][emptyCol];
@@ -494,45 +501,56 @@ public class TaquinFX {
             grid_temp2[emptyRow][emptyCol] = temp;
             //Ajout à la liste des possibilité
             next_state.add(grid_temp2);
+            
+        	}
 
         }
         if (emptyRow < NbrRow - 1 && grid_temp[emptyRow + 1][emptyCol] != -1)
         {
         	int[][] grid_temp3 =copyMatrix(grid_temp);
-        	
+        	if(!visited.contains(grid_temp3))
+        	{
         	// Échanger la tuile avec la case vide
             int temp = grid_temp3[emptyRow + 1][emptyCol];
             grid_temp3[emptyRow + 1][emptyCol] = 0;
             grid_temp3[emptyRow][emptyCol] = temp;
             //Ajout à la liste des possibilité
             next_state.add(grid_temp3);
+        	}
         }
         if (emptyCol > 0 && grid_temp[emptyRow][emptyCol - 1] != -1)
         {
         	int[][] grid_temp4 = copyMatrix(grid_temp);
+        	if(!visited.contains(grid_temp4))
+        	{
         	// Échanger la tuile avec la case vide
             int temp = grid_temp4[emptyRow][emptyCol - 1];
             grid_temp4[emptyRow][emptyCol - 1] = 0;
             grid_temp4[emptyRow][emptyCol] = temp;
             //Ajout à la liste des possibilité
             next_state.add(grid_temp4);
+        	}
         }
         if (emptyCol < NbrCol - 1 && grid_temp[emptyRow][emptyCol + 1] != -1)
         {
         	int[][] grid_temp5 = copyMatrix(grid_temp);
+        	
+        	if(!visited.contains(grid_temp5))
+        	{
         	// Échanger la tuile avec la case vide
             int temp = grid_temp5[emptyRow][emptyCol + 1];
             grid_temp5[emptyRow][emptyCol + 1] = 0;
             grid_temp5[emptyRow][emptyCol] = temp;
             //Ajout à la liste des possibilité
             next_state.add(grid_temp5);
+        	}
         }
         
         return next_state;
     }
     
     
-    private static void resolve_print(ArrayList<int[][]> path)
+    private void resolve_print(ArrayList<int[][]> path)
     {
     	 int delay = 600; // Durée de la pause entre chaque déplacement (en millisecondes)
     	 SequentialTransition sequentialTransition = new SequentialTransition();
@@ -558,8 +576,8 @@ public class TaquinFX {
     	for(int i=0;i<path.size()-1;i++)
     	{   
     		  //Parcours de la grille à l'état i+1
-    		    for (int row2 = 0; row2 < path.get(i+1).length; row2++) {
-        		    for (int col2 = 0; col2 < path.get(i+1).length; col2++) {
+    		    for (int row2 = 0; row2 < NbrRow; row2++) {
+        		    for (int col2 = 0; col2 < NbrCol; col2++) {
         		    	if (path.get(i+1)[row2][col2] == 0) {
         		            emptyRow2 = row2;
         		            emptyCol2 = col2;
@@ -592,8 +610,8 @@ public class TaquinFX {
 
     	     if (iteration[0] < path.size() - 1) {
     	         // Parcours de la grille à l'état i+1
-    	         for (int row2 = 0; row2 < path.get(iteration[0] + 1).length; row2++) {
-    	             for (int col2 = 0; col2 < path.get(iteration[0] + 1).length; col2++) {
+    	         for (int row2 = 0; row2 < NbrRow; row2++) {
+    	             for (int col2 = 0; col2 < NbrCol; col2++) {
     	                 if (path.get(iteration[0] + 1)[row2][col2] == 0) {
     	                     emptyRow2 = row2;
     	                     emptyCol2 = col2;
@@ -618,24 +636,50 @@ public class TaquinFX {
     //Fin résolution auto
 
     // Calcul du coût d'un état en utilisant la distance de Manhattan
-    private static int heuristic(int[][] grid) {
+    private int heuristic(int[][] grid) {
         int cost = 0;
 
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
                 int value = grid[row][col];
 
-                if (value != 0) {
+                if (value != 0 && value != -1) {
                     int targetRow = (value - 1) / NbrRow;
                     int targetCol = (value - 1) % NbrCol;
 
-                    int distance = Math.abs(row - targetRow) + Math.abs(col - targetCol);
-                    cost += distance;
+                    int distanceManhattan = Math.abs(row - targetRow) + Math.abs(col - targetCol);
+                    int linearConflicts = countLinearConflicts(grid, row, col, targetRow, targetCol);
+                    int distanceAmelioree = distanceManhattan + (2 * linearConflicts);
+                    cost += distanceAmelioree;
                 }
             }
         }
 
         return cost;
+    }
+
+    private int countLinearConflicts(int[][] grid, int row, int col, int targetRow, int targetCol) {
+        int conflits = 0;
+
+        if (row == targetRow) {
+            for (int c = col + 1; c < NbrCol; c++) {
+                int value = grid[row][c];
+                if (value != 0 && value != -1 && (value - 1) / NbrRow == row && (value - 1) % NbrCol < targetCol) {
+                    conflits++;
+                }
+            }
+        }
+
+        if (col == targetCol) {
+            for (int r = row + 1; r < NbrRow; r++) {
+                int value = grid[r][col];
+                if (value != 0 && value != -1 && (value - 1) / NbrRow < targetRow && (value - 1) % NbrCol == col) {
+                    conflits++;
+                }
+            }
+        }
+
+        return conflits;
     }
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
