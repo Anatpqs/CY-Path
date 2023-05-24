@@ -1,5 +1,7 @@
 package application;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Label;
 import javafx.geometry.HPos;
@@ -20,37 +22,37 @@ import javafx.scene.shape.Rectangle;
 public class HomePage extends Application {
     
 	public static int numberMove = 0;
-	private GridPane homepage = new GridPane();
-    SplitPane splitPane = new SplitPane();
-    private Scene scene1 = new Scene(splitPane,700,700);
+	private static GridPane homepage = new GridPane();
+	static SplitPane splitPane = new SplitPane();
+    private static Scene scene1 = new Scene(splitPane,700,700);
     
     //private GridPane gridPane = new GridPane();
     
-    private Text Level = new Text(20,100,"#"+2);
+    private static Text Level = new Text(20,100,"#"+2);
     
-    private Image imageLeft = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
-    private ImageView imageViewLeft = new ImageView(imageLeft);
-    private Button buttonLeft = new Button();
+    private  Image imageLeft = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
+    private  ImageView imageViewLeft = new ImageView(imageLeft);
+    private static Button buttonLeft = new Button();
     
-    private Image Settings = new Image(getClass().getResource("Settings.png").toExternalForm());
-    private ImageView imageViewSettings= new ImageView(Settings);
-    private Button buttonSettings = new Button();
+    private  Image Settings = new Image(getClass().getResource("Settings.png").toExternalForm());
+    private  ImageView imageViewSettings= new ImageView(Settings);
+    private static Button buttonSettings = new Button();
     
-    private Image Reset = new Image(getClass().getResource("Reset.png").toExternalForm());
-    private ImageView imageViewReset= new ImageView(Reset);
-    private Button buttonReset = new Button();
+    private  Image Reset = new Image(getClass().getResource("Reset.png").toExternalForm());
+    private  ImageView imageViewReset= new ImageView(Reset);
+    private static Button buttonReset = new Button();
     
-    private Image play = new Image(getClass().getResource("play.png").toExternalForm());
-    private ImageView imageViewplay= new ImageView(play);
-    private Button buttonplay = new Button();
+    //private Image play = new Image(getClass().getResource("play.png").toExternalForm());
+   // private ImageView imageViewplay= new ImageView(play);
+   // private Button buttonplay = new Button();
     
-    private Text nbTurns = new Text(20, 100, "NB TURNS");
+    private static Text nbTurns = new Text(20, 100, "NB TURNS");
     
-    private Text NumberTurns = new Text(20, 100, Integer.toString(numberMove));
-    
-    private Text record = new Text(20, 100, "RECORD");
+    private static Text NumberTurns = new Text(20, 100, Integer.toString(numberMove));
 
-    private Text NumberRecord = new Text(20, 100, "0");
+    private static Text record = new Text(20, 100, "RECORD");
+
+    private static Text NumberRecord = new Text(20, 100, "0");
 
 
     @Override
@@ -106,26 +108,14 @@ public class HomePage extends Application {
             //Remise du niveau à 0
             
             buttonReset.setGraphic(imageViewReset);
-            buttonReset.setStyle("-fx-background-color: black");           
+            buttonReset.setStyle("-fx-background-color: black");   
+            buttonReset.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                	TaquinFX.refreshUI();                }
+            });
             homepage.add(buttonReset, 2,15);
             
-            
-            //Bouton jouer
-            
-            /*buttonplay.setGraphic(imageViewplay);
-            buttonplay.setStyle("-fx-background-color: black");  
-            GridPane.setHalignment(buttonplay, HPos.CENTER);
-            buttonplay.setOnAction(e -> {
-                TaquinFX taquin = new TaquinFX();
-                Stage stage = new Stage();
-                try {
-                    taquin.start(stage);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-         
-            homepage.add(buttonplay, 1,15);*/
             
             
             //nombre de coups actuellement joués
@@ -137,11 +127,12 @@ public class HomePage extends Application {
             GridPane.setColumnSpan(nbTurns, 3); // Spécifie que nbTurns occupe 3 colonnes
             homepage.add(nbTurns, 0, 5);
             
-            NumberTurns.setFont(new Font(75));
+        	NumberTurns.setFont(new Font(75));
             NumberTurns.setFill(Color.WHITE);
             GridPane.setHalignment(NumberTurns, HPos.CENTER);
             GridPane.setMargin(NumberTurns, new Insets(0, 10, 0, 0));
             homepage.add(NumberTurns, 1, 6);
+            
             
             //Record
             record.setFont(new Font(50));
@@ -158,7 +149,6 @@ public class HomePage extends Application {
             homepage.add(NumberRecord, 1, 10);
             
                    
-            TaquinFX taquin = new TaquinFX();
             TaquinFX.RUNstart();
             
             homepage.getChildren().add(new Label(""));
@@ -177,6 +167,16 @@ public class HomePage extends Application {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void setCoup(int coup) {
+    	homepage.getChildren().remove(NumberTurns);
+        NumberTurns.setText(Integer.toString(coup));	
+    	NumberTurns.setFont(new Font(75));
+        NumberTurns.setFill(Color.WHITE);
+        GridPane.setHalignment(NumberTurns, HPos.CENTER);
+        GridPane.setMargin(NumberTurns, new Insets(0, 10, 0, 0));
+        homepage.add(NumberTurns, 1, 6);
     }
     
     /*public void runApplication() {

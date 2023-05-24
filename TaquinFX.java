@@ -31,11 +31,9 @@ public class TaquinFX  {
     private static final int TILE_SIZE = 100;
 
     private static int[][] grille = new int[GRID_SIZE][GRID_SIZE];
-    private static int coups = 0;
-    private static Label coupsLabel = new Label("Coups : 0");
+    private static int coups = HomePage.numberMove;
     public static GridPane gridPane = new GridPane();
     //private static Scene scene;
-    private  static Button melangeButton = new Button("Mélange");
     private static Button button_resolve = new Button("Resolve");
 
 
@@ -71,11 +69,9 @@ public class TaquinFX  {
         button_resolve.setOnAction(e->resolve());
 
         gridPane.setAlignment(Pos.CENTER);   
-        gridPane.add(melangeButton, GRID_SIZE - 1, GRID_SIZE);
-        gridPane.add(coupsLabel, 0, GRID_SIZE); 
+        //gridPane.add(coupsLabel, 0, GRID_SIZE); 
         
         //scene = new Scene(gridPane);
-        melangeButton.setOnAction(e -> refreshUI());
         //scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
         //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         
@@ -117,7 +113,7 @@ public class TaquinFX  {
         int numSwaps = 20; // Nombre d'échanges de nombres
         
         coups = 0; // Réinitialise le compteur de coups à zéro
-        coupsLabel.setText("Coups : 0"); // Met à jour le texte de l'étiquette
+        HomePage.setCoup(coups);
 
         for (int i = 0; i < numSwaps; i++) {
             int row1, col1, row2, col2;
@@ -148,7 +144,7 @@ public class TaquinFX  {
         int numMoves = 30; // Nombre de mouvements de mélange
         
         coups = 0; // Réinitialise le compteur de coups à zéro
-        coupsLabel.setText("Coups : 0"); // Met à jour le texte de l'étiquette
+        HomePage.setCoup(coups);
 
         for (int i = 0; i < numMoves; i++) {
             int emptyRow = -1;
@@ -212,7 +208,8 @@ public class TaquinFX  {
             int emptyCol = -1;
             
             coups++; // Incrémente le compteur de coups
-            coupsLabel.setText("Coups : " + coups); // Met à jour le texte de l'étiquette
+            HomePage.setCoup(coups);
+            //coupsLabel.setText("Coups : " + coups); // Met à jour le texte de l'étiquette
 
             // Rechercher la case vide
             for (int i = 0; i < GRID_SIZE; i++) {
@@ -313,7 +310,7 @@ public class TaquinFX  {
         return newGrid;
     }
     
-    private static void refreshUI() {
+    static void refreshUI() {
     	shuffle();
     	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
 
@@ -334,8 +331,7 @@ public class TaquinFX  {
             }
         }
         
-        gridPane.add(melangeButton, GRID_SIZE - 1, GRID_SIZE);
-        gridPane.add(coupsLabel, 0, GRID_SIZE); // Ajoutez-le à la dernière ligne de la grille
+        //gridPane.add(coupsLabel, 0, GRID_SIZE); // Ajoutez-le à la dernière ligne de la grille
         gridPane.add(button_resolve,0,GRID_SIZE+1);
     }
     
