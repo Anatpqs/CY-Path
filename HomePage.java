@@ -10,12 +10,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -24,7 +22,7 @@ public class HomePage extends Application {
 	public static int numberMove = 0;
 	private static GridPane homepage = new GridPane();
 	static SplitPane splitPane = new SplitPane();
-    private static Scene scene1 = new Scene(splitPane,700,700);
+    private static Scene scene1 = new Scene(splitPane,900,700);
     
     //private GridPane gridPane = new GridPane();
     
