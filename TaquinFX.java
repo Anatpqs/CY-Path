@@ -32,10 +32,8 @@ public class TaquinFX  {
 
     private static int[][] grille = new int[GRID_SIZE][GRID_SIZE];
     private static int coups = HomePage.numberMove;
-    private static Label coupsLabel = new Label("Coups : 0");
     public static GridPane gridPane = new GridPane();
     //private static Scene scene;
-    private  static Button melangeButton = new Button("Mélange");
     private static Button button_resolve = new Button("Resolve");
 
 
@@ -71,11 +69,9 @@ public class TaquinFX  {
         button_resolve.setOnAction(e->resolve());
 
         gridPane.setAlignment(Pos.CENTER);   
-        gridPane.add(melangeButton, GRID_SIZE - 1, GRID_SIZE);
         //gridPane.add(coupsLabel, 0, GRID_SIZE); 
         
         //scene = new Scene(gridPane);
-        melangeButton.setOnAction(e -> refreshUI());
         //scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
         //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         
@@ -314,7 +310,7 @@ public class TaquinFX  {
         return newGrid;
     }
     
-    private static void refreshUI() {
+    static void refreshUI() {
     	shuffle();
     	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
 
@@ -335,8 +331,7 @@ public class TaquinFX  {
             }
         }
         
-        gridPane.add(melangeButton, GRID_SIZE - 1, GRID_SIZE);
-        gridPane.add(coupsLabel, 0, GRID_SIZE); // Ajoutez-le à la dernière ligne de la grille
+        //gridPane.add(coupsLabel, 0, GRID_SIZE); // Ajoutez-le à la dernière ligne de la grille
         gridPane.add(button_resolve,0,GRID_SIZE+1);
     }
     

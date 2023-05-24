@@ -1,5 +1,7 @@
 package application;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Label;
 import javafx.geometry.HPos;
@@ -106,26 +108,14 @@ public class HomePage extends Application {
             //Remise du niveau à 0
             
             buttonReset.setGraphic(imageViewReset);
-            buttonReset.setStyle("-fx-background-color: black");           
+            buttonReset.setStyle("-fx-background-color: black");   
+            buttonReset.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                	TaquinFX.refreshUI();                }
+            });
             homepage.add(buttonReset, 2,15);
             
-            
-            //Bouton jouer
-            
-            /*buttonplay.setGraphic(imageViewplay);
-            buttonplay.setStyle("-fx-background-color: black");  
-            GridPane.setHalignment(buttonplay, HPos.CENTER);
-            buttonplay.setOnAction(e -> {
-                TaquinFX taquin = new TaquinFX();
-                Stage stage = new Stage();
-                try {
-                    taquin.start(stage);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-         
-            homepage.add(buttonplay, 1,15);*/
             
             
             //nombre de coups actuellement joués
@@ -159,7 +149,6 @@ public class HomePage extends Application {
             homepage.add(NumberRecord, 1, 10);
             
                    
-            TaquinFX taquin = new TaquinFX();
             TaquinFX.RUNstart();
             
             homepage.getChildren().add(new Label(""));
