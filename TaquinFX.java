@@ -48,7 +48,7 @@ public class TaquinFX {
 
     
     public static void RUNstart() throws IOException {
-    	String cheminFichier = "src/niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
+    	String cheminFichier = "/home/cytech/eclipse-workspace/Slide_v1/src/application/Niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
    	 	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
    	 	IndexMax = levels.size();
         Niveau niveau = levels.get(HomePage.Index_level);
@@ -152,7 +152,33 @@ public class TaquinFX {
 
     }
     
-    private static void shuffle() {
+    private static void shuffleRandomly() {
+    	Random random = new Random();
+        int nbAleatoire = random.nextInt(2); // Génère soit 0, soit 1
+        if(nbAleatoire == 0) {
+        	refreshUI1();
+        } else {
+        	refreshUI2();
+        }
+    }
+    
+    private static void shuffle1() {
+    	int[][] grilleInit = copyMatrix(grille);
+    	boolean shuffleGood = false;
+        while (!shuffleGood) {
+            shuffleGrille1();
+            shuffleGood = true; // Supposons que le mélange est bon par défaut
+            for (int row = 0; row < grilleInit.length; row++) {
+                for (int col = 0; col < grilleInit[0].length; col++) {
+                    if (grilleInit[row][col] == grille[row][col] && grille[row][col] != -1) {
+                    	shuffleGood = false;
+                    }
+                }
+            }
+        }
+    }
+    
+    private static void shuffle2() {
     	int[][] grilleInit = copyMatrix(grille);
     	boolean shuffleGood = false;
         while (!shuffleGood) {
@@ -167,6 +193,7 @@ public class TaquinFX {
             }
         }
     }
+    
     private static void shuffleGrille1(){
         Random rand = new Random();
         int numSwaps = 20; // Nombre d'échanges de nombres
@@ -365,10 +392,9 @@ public class TaquinFX {
         return newGrid;
     }
     
-    static void refreshUI() {
-    	
+    static void refreshUI1() { 	
     	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
-    	shuffle();
+    	shuffle1();
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
                 if (grille[row][col] != 0 && grille[row][col] != -1) {
@@ -385,9 +411,50 @@ public class TaquinFX {
                 }
             }
         }
-        
-        //gridPane.add(button_resolve,0,NbrCol+1);
     }
+    
+    static void refreshUI2() { 	
+    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
+    	shuffle2();
+        for (int row = 0; row < NbrRow; row++) {
+            for (int col = 0; col < NbrCol; col++) {
+                if (grille[row][col] != 0 && grille[row][col] != -1) {
+                    Button button = new Button(Integer.toString(grille[row][col]));
+                    button.setPrefSize(TILE_SIZE, TILE_SIZE);
+                    button.setOnAction(e -> moveTile(button));
+
+                    gridPane.add(button, col, row);
+                } else if (grille[row][col] == -1) {
+                    Pane emptyPane = new Pane();
+                    emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
+                    emptyPane.getStyleClass().add("case-vide");
+                    gridPane.add(emptyPane, col, row);
+                }
+            }
+        }
+    }
+    
+    static void refreshUIRandom() { 	
+    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
+    	shuffleRandomly();
+        for (int row = 0; row < NbrRow; row++) {
+            for (int col = 0; col < NbrCol; col++) {
+                if (grille[row][col] != 0 && grille[row][col] != -1) {
+                    Button button = new Button(Integer.toString(grille[row][col]));
+                    button.setPrefSize(TILE_SIZE, TILE_SIZE);
+                    button.setOnAction(e -> moveTile(button));
+
+                    gridPane.add(button, col, row);
+                } else if (grille[row][col] == -1) {
+                    Pane emptyPane = new Pane();
+                    emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
+                    emptyPane.getStyleClass().add("case-vide");
+                    gridPane.add(emptyPane, col, row);
+                }
+            }
+        }
+    }
+    
     
   //Résolution suivant l'algo A*
     static void resolve()
