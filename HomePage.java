@@ -284,4 +284,7 @@ public class HomePage extends Application {
         GridPane.setMargin(NumberRecord, new Insets(0, 10, 0, 0));
         homepage.add(NumberRecord, 1, 10);
     }
+	public static int getRecord() {
+		return Integer.parseInt(NumberTurns.getText());
+	}
 }
