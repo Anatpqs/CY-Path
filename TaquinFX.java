@@ -281,6 +281,12 @@ public class TaquinFX {
 
 
     private static void moveTile(Button button) {
+	    List<Niveau> levels = null;
+		try {
+			levels = GestionNiveaux.chargerNiveaux(cheminFichier);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
         int row = GridPane.getRowIndex(button);
         int col = GridPane.getColumnIndex(button);
         
