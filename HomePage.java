@@ -112,11 +112,13 @@ public class HomePage extends Application {
             buttonRight.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                	if(Index_level < TaquinFX.IndexMax-1) {
-                		Index_level++;
-                    	setLevel();
-                    	setScore();
-                    	setBoardGame();
+                	if(TaquinFX.score != 0) {
+                		if(Index_level < TaquinFX.IndexMax-1) {
+                    		Index_level++;
+                        	setLevel();
+                        	setScore();
+                        	setBoardGame();
+                    	}
                 	}
                 	}
             });
@@ -215,7 +217,6 @@ public class HomePage extends Application {
 			TaquinFX.RUNstart();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	TaquinFX.gridPane.getChildren().add(new Label(""));
@@ -248,7 +249,6 @@ public class HomePage extends Application {
 			TaquinFX.RUNstart();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	NumberRecord.setText(Integer.toString(TaquinFX.score));	
