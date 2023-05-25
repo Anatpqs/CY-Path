@@ -30,8 +30,7 @@ import java.util.PriorityQueue;
 public class TaquinFX {
 	
     private static final int TILE_SIZE = 100;
-    public static int coups = HomePage.numberMove;
-    public static int score = 0;
+    static int coups = HomePage.numberMove;
     
     private static int[][] grille;
     static GridPane gridPane = new GridPane();
@@ -39,7 +38,7 @@ public class TaquinFX {
     public static void setGrille(Niveau niveau) {
         grille = niveau.getGrille();
     }
-    
+    public static int score = 0;
     //private static Button button_resolve = new Button("Resolve");
     
     //Définition niveau
@@ -57,6 +56,7 @@ public class TaquinFX {
         NbrCol = niveau.getColonnes();
         grid_level=copyMatrix(niveau.getGrille());
         score=niveau.getScore();
+        System.out.println(score);
         
         // Boutton pour résoudre
         //gridPane.add(button_resolve,0,NbrCol+1);
@@ -367,9 +367,9 @@ public class TaquinFX {
     }
     
     static void refreshUI() {
-    	shuffle();
+    	
     	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
-
+    	shuffle();
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
                 if (grille[row][col] != 0 && grille[row][col] != -1) {

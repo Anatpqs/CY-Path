@@ -1,5 +1,6 @@
 package application;
 import java.io.IOException;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -54,13 +55,13 @@ public class HomePage extends Application {
     private static Text record = new Text(20, 100, "RECORD");
 
     
-    private static Text NumberRecord = new Text(20, 100, Integer.toString(TaquinFX.score));
+    private static Text NumberRecord ;
 
 
     @Override
     public void start(Stage primaryStage) {
         try {
-
+        	TaquinFX.RUNstart();
 
             //Acceuil
             homepage.setPadding(new Insets(10));
@@ -92,6 +93,7 @@ public class HomePage extends Application {
                 	if(Index_level > 0) {
                 		Index_level--;
                 		setLevel();
+                		setScore();
                 		setBoardGame();
                 	}
                 	          }
@@ -112,6 +114,7 @@ public class HomePage extends Application {
                 public void handle(ActionEvent event) {
                 	Index_level++;
                 	setLevel();
+                	setScore();
                 	setBoardGame();
                 	}
             });
@@ -132,13 +135,9 @@ public class HomePage extends Application {
             buttonReset.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+                	
                 	TaquinFX.refreshUI();  
-                	try {
-						TaquinFX.RUNstart();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                	
                 	}
             });
             homepage.add(buttonReset, 2,15);
@@ -169,6 +168,7 @@ public class HomePage extends Application {
             
             
             //Record
+            
             record.setFont(new Font(50));
             record.setFill(Color.WHITE);
             GridPane.setHalignment(record, HPos.CENTER);
@@ -176,6 +176,7 @@ public class HomePage extends Application {
             GridPane.setColumnSpan(record, 3); // Spécifie que nbTurns occupe 3 colonnes
             homepage.add(record, 0, 9);
             
+            NumberRecord = new Text(20, 100, Integer.toString(TaquinFX.score));
             NumberRecord.setFont(new Font(75));
             NumberRecord.setFill(Color.WHITE);
             GridPane.setHalignment(NumberRecord, HPos.CENTER);
@@ -183,7 +184,7 @@ public class HomePage extends Application {
             homepage.add(NumberRecord, 1, 10);
             
                    
-            TaquinFX.RUNstart();
+            
             
             homepage.getChildren().add(new Label(""));
             TaquinFX.gridPane.getChildren().add(new Label(""));
@@ -204,6 +205,7 @@ public class HomePage extends Application {
         }
     }
     public static void setBoardGame() {
+    	splitPane.getItems().remove(TaquinFX.gridPane);
     	TaquinFX.coups = 0;
     	setCoup(TaquinFX.coups);
     	TaquinFX.gridPane.getChildren().clear();
@@ -240,6 +242,13 @@ public class HomePage extends Application {
     
     public static void setScore() {
     	homepage.getChildren().remove(NumberRecord);
+    	try {
+			TaquinFX.RUNstart();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	NumberRecord.setText(Integer.toString(TaquinFX.score));	
     	NumberRecord.setFont(new Font(75));
         NumberRecord.setFill(Color.WHITE);
