@@ -29,7 +29,7 @@ public class HomePage extends Application {
 
     public static int Index_level = 0;
     
-    private static Text Level = new Text(20,100,"#"+Index_level);
+    private static Text Level = new Text(20,100,"#"+(Index_level+1));
     
     private  Image imageLeft = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
     private  ImageView imageViewLeft = new ImageView(imageLeft);
@@ -235,7 +235,7 @@ public class HomePage extends Application {
     
     public static void setLevel() {
     	homepage.getChildren().remove(Level);
-        Level.setText("#"+ Index_level);	
+        Level.setText("#"+ (Index_level+1));	
         Level.setFont(new Font(75));
         Level.setFill(Color.WHITE);  
         GridPane.setHalignment(Level, HPos.CENTER);
