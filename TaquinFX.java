@@ -30,7 +30,7 @@ import java.util.PriorityQueue;
 public class TaquinFX {
 	
     private static final int TILE_SIZE = 100;
-    private static int coups = HomePage.numberMove;
+    public static int coups = HomePage.numberMove;
     public static int score = 0;
     
     private static int[][] grille;
