@@ -163,7 +163,9 @@ public class HomePage extends Application {
                 		}
                 	});
                 	
-                	
+                	TaquinFX.gridPane.add(buttonrefreshUI1, 0, 10);
+                	TaquinFX.gridPane.add(buttonrefreshUI2, 1, 10);
+                	TaquinFX.gridPane.add(buttonrandom, 2, 10);
                 	//TaquinFX.refreshUI();  
                 	
                 	}
@@ -243,7 +245,7 @@ public class HomePage extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	TaquinFX.gridPane.getChildren().add(new Label(""));
+    	//TaquinFX.gridPane.getChildren().add(new Label(""));
     	splitPane.getItems().add(TaquinFX.gridPane);
     	
     }
