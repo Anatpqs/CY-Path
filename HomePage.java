@@ -112,10 +112,12 @@ public class HomePage extends Application {
             buttonRight.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                	Index_level++;
-                	setLevel();
-                	setScore();
-                	setBoardGame();
+                	if(Index_level < TaquinFX.IndexMax-1) {
+                		Index_level++;
+                    	setLevel();
+                    	setScore();
+                    	setBoardGame();
+                	}
                 	}
             });
             homepage.add(buttonRight, 2, 0);

@@ -34,7 +34,7 @@ public class TaquinFX {
     
     private static int[][] grille;
     static GridPane gridPane = new GridPane();
-
+    public static int IndexMax ;
     public static void setGrille(Niveau niveau) {
         grille = niveau.getGrille();
     }
@@ -50,13 +50,12 @@ public class TaquinFX {
     public static void RUNstart() throws IOException {
     	String cheminFichier = "src/niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
    	 	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
-       
+   	 	IndexMax = levels.size();
         Niveau niveau = levels.get(HomePage.Index_level);
         NbrRow = niveau.getLignes();
         NbrCol = niveau.getColonnes();
         grid_level=copyMatrix(niveau.getGrille());
         score=niveau.getScore();
-        System.out.println(score);
         
         // Boutton pour résoudre
         //gridPane.add(button_resolve,0,NbrCol+1);
