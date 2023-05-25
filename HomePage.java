@@ -204,7 +204,8 @@ public class HomePage extends Application {
         }
     }
     public static void setBoardGame() {
-    	//splitPane.getItems().remove(TaquinFX.gridPane);
+    	TaquinFX.coups = 0;
+    	setCoup(TaquinFX.coups);
     	TaquinFX.gridPane.getChildren().clear();
     	try {
 			TaquinFX.RUNstart();
