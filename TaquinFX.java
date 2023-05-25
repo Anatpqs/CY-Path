@@ -616,32 +616,37 @@ public class TaquinFX {
     }
     
     
-    private static void resolve_print(ArrayList<int[][]> path)
+   private static void resolve_print(ArrayList<int[][]> path)
     {
-    	 int delay = 600; // Durée de la pause entre chaque déplacement (en millisecondes)
+    	 int delay = 600; // DurÃ©e de la pause entre chaque dÃ©placement (en millisecondes)
     	 SequentialTransition sequentialTransition = new SequentialTransition();
     
-    	 //Boutton pour résolution auto ou étape par étape
+    	 //Boutton pour rÃ©solution auto ou Ã©tape par Ã©tape
     	 Button resolve_auto=new Button("Auto");
     	 gridPane.add(resolve_auto,1,NbrCol+1);
 
     	 Button resolve_etape=new Button(">");
     	 gridPane.add(resolve_etape,2,NbrCol+1);
     	
-
-        //Affichage de toute la résolution auto
+    	 ObservableList<Node> children = gridPane.getChildren();
+        //Affichage de toute la rÃ©solution auto
     	resolve_auto.setOnAction(a->{ 
-    		//On enlève l'affichage des boutons
+    		//On enlÃ¨ve l'affichage des boutons
     		gridPane.getChildren().remove(resolve_etape);
     		gridPane.getChildren().remove(resolve_auto);
+
+    	        for (Node node : children) {
+    	        	node.setDisable(true);
+    	        }
     		
-    		//On cherche où la case vide s'est déplacé à l'état i+1
+    		//On cherche oÃ¹ la case vide s'est dÃ©placÃ© Ã  l'Ã©tat i+1
     		int emptyRow2= -1;
         	int emptyCol2 = -1;
         	
     	for(int i=0;i<path.size()-1;i++)
     	{   
-    		  //Parcours de la grille à l'état i+1
+    		
+    		  //Parcours de la grille Ã  l'Ã©tat i+1
     		    for (int row2 = 0; row2 < NbrRow; row2++) {
         		    for (int col2 = 0; col2 < NbrCol; col2++) {
         		    	if (path.get(i+1)[row2][col2] == 0) {
@@ -651,9 +656,11 @@ public class TaquinFX {
         		        }
         		    }
     		    }
-    	//Déplacer	  
+    	        
+    	//DÃ©placer	  
     		    final int finalEmptyRow = emptyRow2;
     		    final int finalEmptyCol= emptyCol2;
+    		    
     		    PauseTransition pause = new PauseTransition(Duration.millis(delay));
     		    
     	        pause.setOnFinished(evt -> {
@@ -661,21 +668,35 @@ public class TaquinFX {
     		    });
     	        sequentialTransition.getChildren().add(pause);
 	     }
-    	sequentialTransition.play();
     	
+    	//Désactiver les boutons pendants la résolution
+    	sequentialTransition.setOnFinished(event -> {
+    	    for (Node node : children) {
+    	        node.setDisable(false);
+    	    }
     	});
     	
-    	//Affichage étape par étape
+    	sequentialTransition.play();
+    	});
+    	
+    	
+    	//Affichage Ã©tape par Ã©tape
     	 int[] iteration = {0};
 
     	 resolve_etape.setOnAction(a -> {
     		 gridPane.getChildren().remove(resolve_auto);
     		 
+    		 for (Node node : children) {
+ 	        	node.setDisable(true);
+ 	        }
+    		 resolve_etape.setDisable(false);
+    		 
     	     int emptyRow2 = -1;
     	     int emptyCol2 = -1;
 
     	     if (iteration[0] < path.size() - 1) {
-    	         // Parcours de la grille à l'état i+1
+    	    	 
+    	         // Parcours de la grille Ã  l'Ã©tat i+1
     	         for (int row2 = 0; row2 < NbrRow; row2++) {
     	             for (int col2 = 0; col2 < NbrCol; col2++) {
     	                 if (path.get(iteration[0] + 1)[row2][col2] == 0) {
@@ -686,20 +707,20 @@ public class TaquinFX {
     	             }
     	         }
 
-    	         // Déplacer
     	         moveTile((Button) getNodeByRowColumnIndex(emptyRow2, emptyCol2));
-
+    	         
     	         iteration[0]++;
     	     }
     	     else
     	     {
-    	    	 resolve_etape.setDisable(true);
-    	    	 resolve_auto.setDisable(true);
+    	    	 for (Node node : children) {
+    	 	        	node.setDisable(false);
+    	 	        }
+    	    	 gridPane.getChildren().remove(resolve_etape);
     	     }
     	 });
     
     }
-    //Fin résolution auto
 
     // Calcul du coût d'un état en utilisant la distance de Manhattan
     private static int heuristic(int[][] grid) {
