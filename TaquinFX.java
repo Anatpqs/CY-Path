@@ -31,7 +31,8 @@ public class TaquinFX {
 	
     private static final int TILE_SIZE = 100;
     private static int coups = HomePage.numberMove;
-
+    public static int score = 0;
+    
     private static int[][] grille;
     static GridPane gridPane = new GridPane();
 
@@ -39,7 +40,7 @@ public class TaquinFX {
         grille = niveau.getGrille();
     }
     
-    private static Button button_resolve = new Button("Resolve");
+    //private static Button button_resolve = new Button("Resolve");
     
     //Définition niveau
     private static int NbrRow;
@@ -51,15 +52,15 @@ public class TaquinFX {
     	String cheminFichier = "src/niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
    	 	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
        
-        Niveau niveau = levels.get(0);
+        Niveau niveau = levels.get(HomePage.Index_level);
         NbrRow = niveau.getLignes();
         NbrCol = niveau.getColonnes();
         grid_level=copyMatrix(niveau.getGrille());
-        
+        score=niveau.getScore();
         
         // Boutton pour résoudre
-        gridPane.add(button_resolve,0,NbrCol+1);
-        button_resolve.setOnAction(e->resolve());
+        //gridPane.add(button_resolve,0,NbrCol+1);
+        //button_resolve.setOnAction(e->resolve());
       
         
         setGrille(niveau);
@@ -346,7 +347,7 @@ public class TaquinFX {
     
 
   
-    private boolean estResolu() {
+    private static boolean estResolu() {
     	int[][] grid_final= grid_level;
     	if(Arrays.deepEquals(grille,grid_final))
     	{
@@ -386,12 +387,11 @@ public class TaquinFX {
             }
         }
         
-        gridPane.add(button_resolve,0,NbrCol+1);
+        //gridPane.add(button_resolve,0,NbrCol+1);
     }
     
-   //--------------------------------------------------------------------------------------------------------------------------------------------------------
   //Résolution suivant l'algo A*
-    private void resolve()
+    static void resolve()
     {
     	
     	int[][] grid_start=copyMatrix(grille);
@@ -471,7 +471,7 @@ public class TaquinFX {
     }
     
     
-    public ArrayList<int[][]> generateNeighbors(int[][] grid_temp,HashSet<int[][]> visited)
+    public static ArrayList<int[][]> generateNeighbors(int[][] grid_temp,HashSet<int[][]> visited)
     {
     	ArrayList<int[][]> next_state=new ArrayList<>();
 		// Rechercher la case vide
@@ -550,7 +550,7 @@ public class TaquinFX {
     }
     
     
-    private void resolve_print(ArrayList<int[][]> path)
+    private static void resolve_print(ArrayList<int[][]> path)
     {
     	 int delay = 600; // Durée de la pause entre chaque déplacement (en millisecondes)
     	 SequentialTransition sequentialTransition = new SequentialTransition();
@@ -636,7 +636,7 @@ public class TaquinFX {
     //Fin résolution auto
 
     // Calcul du coût d'un état en utilisant la distance de Manhattan
-    private int heuristic(int[][] grid) {
+    private static int heuristic(int[][] grid) {
         int cost = 0;
 
         for (int row = 0; row < NbrRow; row++) {
@@ -658,7 +658,7 @@ public class TaquinFX {
         return cost;
     }
 
-    private int countLinearConflicts(int[][] grid, int row, int col, int targetRow, int targetCol) {
+    private static int countLinearConflicts(int[][] grid, int row, int col, int targetRow, int targetCol) {
         int conflits = 0;
 
         if (row == targetRow) {
@@ -744,4 +744,5 @@ private static Boolean solvability( ) {
 }
 
 }
+  
   

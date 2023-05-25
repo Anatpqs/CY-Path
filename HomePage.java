@@ -1,4 +1,6 @@
 package application;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,10 +25,10 @@ public class HomePage extends Application {
 	private static GridPane homepage = new GridPane();
 	static SplitPane splitPane = new SplitPane();
     private static Scene scene1 = new Scene(splitPane,900,700);
+
+    public static int Index_level = 0;
     
-    //private GridPane gridPane = new GridPane();
-    
-    private static Text Level = new Text(20,100,"#"+2);
+    private static Text Level = new Text(20,100,"#"+Index_level);
     
     private  Image imageLeft = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
     private  ImageView imageViewLeft = new ImageView(imageLeft);
@@ -40,9 +42,10 @@ public class HomePage extends Application {
     private  ImageView imageViewReset= new ImageView(Reset);
     private static Button buttonReset = new Button();
     
-    //private Image play = new Image(getClass().getResource("play.png").toExternalForm());
-   // private ImageView imageViewplay= new ImageView(play);
-   // private Button buttonplay = new Button();
+    private  Image Resolve = new Image(getClass().getResource("resolve.png").toExternalForm());
+    private  ImageView imageViewResolve= new ImageView(Resolve);
+    private static Button buttonResolve = new Button();
+
     
     private static Text nbTurns = new Text(20, 100, "NB TURNS");
     
@@ -50,7 +53,8 @@ public class HomePage extends Application {
 
     private static Text record = new Text(20, 100, "RECORD");
 
-    private static Text NumberRecord = new Text(20, 100, "0");
+    
+    private static Text NumberRecord = new Text(20, 100, Integer.toString(TaquinFX.score));
 
 
     @Override
@@ -82,6 +86,16 @@ public class HomePage extends Application {
             buttonLeft.setStyle("-fx-background-color: black");
             GridPane.setHalignment(Level, HPos.LEFT);
             GridPane.setMargin(buttonLeft, new Insets(0, 0, 0, 10));
+            buttonLeft.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                	if(Index_level > 0) {
+                		Index_level--;
+                		setLevel();
+                		setBoardGame();
+                	}
+                	          }
+            });
             homepage.add(buttonLeft, 0, 0);
 
 
@@ -93,6 +107,14 @@ public class HomePage extends Application {
             buttonRight.setStyle("-fx-background-color: black");           
             GridPane.setHalignment(Level, HPos.RIGHT);
             GridPane.setMargin(buttonRight, new Insets(0, 0, 0, 10));
+            buttonRight.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                	Index_level++;
+                	setLevel();
+                	setBoardGame();
+                	}
+            });
             homepage.add(buttonRight, 2, 0);
 
             
@@ -110,11 +132,25 @@ public class HomePage extends Application {
             buttonReset.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                	TaquinFX.refreshUI();                }
+                	TaquinFX.refreshUI();  
+                	try {
+						TaquinFX.RUNstart();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                	}
             });
             homepage.add(buttonReset, 2,15);
             
-            
+            buttonResolve.setGraphic(imageViewResolve);
+            buttonResolve.setStyle("-fx-background-color: black");   
+            buttonResolve.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                	TaquinFX.resolve();                }
+            });
+            homepage.add(buttonResolve, 1,15);
             
             //nombre de coups actuellement joués
             
@@ -152,7 +188,8 @@ public class HomePage extends Application {
             homepage.getChildren().add(new Label(""));
             TaquinFX.gridPane.getChildren().add(new Label(""));
             splitPane.getItems().addAll(homepage, TaquinFX.gridPane);
-            
+            //splitPane.setDividerPositions(0.5);
+          
             primaryStage.setScene(scene1);
             primaryStage.show();
             primaryStage.setTitle("Jeu du Taquin");
@@ -166,7 +203,20 @@ public class HomePage extends Application {
             e.printStackTrace();
         }
     }
-    
+    public static void setBoardGame() {
+    	//splitPane.getItems().remove(TaquinFX.gridPane);
+    	TaquinFX.gridPane.getChildren().clear();
+    	try {
+			TaquinFX.RUNstart();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	TaquinFX.gridPane.getChildren().add(new Label(""));
+    	splitPane.getItems().add(TaquinFX.gridPane);
+    	
+    }
     public static void setCoup(int coup) {
     	homepage.getChildren().remove(NumberTurns);
         NumberTurns.setText(Integer.toString(coup));	
@@ -177,7 +227,23 @@ public class HomePage extends Application {
         homepage.add(NumberTurns, 1, 6);
     }
     
-    /*public void runApplication() {
-        Application.launch(TaquinFX.class);
-    }*/
+    public static void setLevel() {
+    	homepage.getChildren().remove(Level);
+        Level.setText("#"+ Index_level);	
+        Level.setFont(new Font(75));
+        Level.setFill(Color.WHITE);  
+        GridPane.setHalignment(Level, HPos.CENTER);
+        GridPane.setMargin(Level, new Insets(0, 10, 0, 0));
+        homepage.add(Level, 1, 0);
+    }
+    
+    public static void setScore() {
+    	homepage.getChildren().remove(NumberRecord);
+    	NumberRecord.setText(Integer.toString(TaquinFX.score));	
+    	NumberRecord.setFont(new Font(75));
+        NumberRecord.setFill(Color.WHITE);
+        GridPane.setHalignment(NumberRecord, HPos.CENTER);
+        GridPane.setMargin(NumberRecord, new Insets(0, 10, 0, 0));
+        homepage.add(NumberRecord, 1, 10);
+    }
 }

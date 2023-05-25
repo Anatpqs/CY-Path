@@ -1,4 +1,4 @@
-package cy_slide_jeudetaquin;
+package application;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

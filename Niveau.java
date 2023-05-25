@@ -18,11 +18,14 @@ public class Niveau {
     public void setTuile(int ligne, int colonne, int tuile) {
         grille[ligne][colonne] = tuile;
     }
-    public int[][] getTuiles() {
-        return grille;
+    public int getTuile(int i, int j) {
+        if (i >= 0 && i < lignes && j >= 0 && j < colonnes) {
+            return grille[i][j];
+        } else {
+            throw new IndexOutOfBoundsException("Coordonnées de tuile invalides.");
+        }
     }
-
-    
+   
     public int[][] getGrille() {
         return grille;
     }
