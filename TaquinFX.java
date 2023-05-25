@@ -48,7 +48,7 @@ public class TaquinFX {
 
     
     public static void RUNstart() throws IOException {
-    	String cheminFichier = "/home/cytech/eclipse-workspace/Slide_v1/src/application/Niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
+    	String cheminFichier = "/home/cytech/eclipse-workspace/testFX/src/niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
    	 	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
    	 	IndexMax = levels.size();
         Niveau niveau = levels.get(HomePage.Index_level);
@@ -810,5 +810,6 @@ private static Boolean solvability( ) {
 }
 
 }
+  
   
   

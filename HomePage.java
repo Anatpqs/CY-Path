@@ -139,8 +139,32 @@ public class HomePage extends Application {
             buttonReset.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+                	Button buttonrefreshUI1 = new Button("Melange 1");
+                	buttonrefreshUI1.setOnAction(new EventHandler<ActionEvent>() {
+                		@Override
+                		public void handle(ActionEvent event) {
+                			TaquinFX.refreshUI1();
+                		}
+                	});
                 	
-                	TaquinFX.refreshUI();  
+                	Button buttonrefreshUI2 = new Button("Melange 2");
+                	buttonrefreshUI2.setOnAction(new EventHandler<ActionEvent>() {
+                		@Override
+                		public void handle(ActionEvent event) {
+                			TaquinFX.refreshUI2();
+                		}
+                	});
+                	
+                	Button buttonrandom = new Button("Random");
+                	buttonrandom.setOnAction(new EventHandler<ActionEvent>() {
+                		@Override
+                		public void handle(ActionEvent event) {
+                			TaquinFX.refreshUIRandom();
+                		}
+                	});
+                	
+                	
+                	//TaquinFX.refreshUI();  
                 	
                 	}
             });
@@ -190,8 +214,8 @@ public class HomePage extends Application {
                    
             
             
-            homepage.getChildren().add(new Label(""));
-            TaquinFX.gridPane.getChildren().add(new Label(""));
+            /*homepage.getChildren().add(new Label(""));
+            TaquinFX.gridPane.getChildren().add(new Label(""));*/
             splitPane.getItems().addAll(homepage, TaquinFX.gridPane);
             //splitPane.setDividerPositions(0.5);
           
