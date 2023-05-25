@@ -46,11 +46,11 @@ public class TaquinFX {
     private static int NbrCol;
     private static int[][] grid_level;
 
+    public static String cheminFichier = "/home/cytech/eclipse-workspace/CY_slide_github/src/application/niveau.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
     
     public static void RUNstart() throws IOException {
-    	String cheminFichier = "/home/cytech/eclipse-workspace/testFX/src/niveau.txt";  //                         /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
-   	 	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
-   	 	IndexMax = levels.size();
+	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
+	IndexMax = levels.size();
         Niveau niveau = levels.get(HomePage.Index_level);
         NbrRow = niveau.getLignes();
         NbrCol = niveau.getColonnes();
@@ -318,8 +318,19 @@ public class TaquinFX {
 
             // Vérifier si le puzzle est résolu
             if (estResolu()) {
-                System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
-                // Ajoutez ici le code pour gérer la résolution du puzzle
+            	try {
+            		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord()) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
+            			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
+    					GestionNiveaux.sauvegarderNiveaux(levels, cheminFichier);
+            		}
+            		/*System.out.println("AncienRecord: "+levels.get(HomePage.Index_level).getScore());  // Code qui affiche dans la console pour une meilleur compréhension
+            		System.out.println("Score: "+HomePage.getRecord());
+					
+					System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
+					System.out.println("NouveauRecord: " + levels.get(HomePage.Index_level).getScore());*/
+				} catch (IOException e) {
+					e.printStackTrace();
+				}                
             }
         } else {
             System.out.println("Déplacement invalide !");
