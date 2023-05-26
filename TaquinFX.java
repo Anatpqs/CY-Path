@@ -81,7 +81,6 @@ public class TaquinFX {
         
         // Adjuste la taille de la fenÃªtre suivant la taille de la grille
         gridPane.setPrefSize(colonnes * TILE_SIZE, lignes * TILE_SIZE);        
-        
         for (int row = 0; row < lignes; row++) {
             for (int col = 0; col < colonnes; col++) {
                 if (grille[row][col] != 0 && grille[row][col] != -1) {
@@ -341,7 +340,7 @@ public class TaquinFX {
 				}                
             }
         } else {
-            System.out.println("Déplacement invalide !");
+            HomePage.displacementfalse();
         }
     }
     

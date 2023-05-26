@@ -18,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class HomePage extends Application {
     
@@ -168,7 +170,7 @@ public class HomePage extends Application {
                 	buttonrefreshUI1.setOnAction(new EventHandler<ActionEvent>() {
                 		@Override
                 		public void handle(ActionEvent event) {
-					TaquinFX.test_resolve=false;
+        					TaquinFX.test_resolve=false;
                 			TaquinFX.refreshUI1();
                 		}
                 	});
@@ -177,7 +179,7 @@ public class HomePage extends Application {
                 	buttonrefreshUI2.setOnAction(new EventHandler<ActionEvent>() {
                 		@Override
                 		public void handle(ActionEvent event) {
-					TaquinFX.test_resolve=false;
+        					TaquinFX.test_resolve=false;
                 			TaquinFX.refreshUI2();
                 		}
                 	});
@@ -186,7 +188,7 @@ public class HomePage extends Application {
                 	buttonrandom.setOnAction(new EventHandler<ActionEvent>() {
                 		@Override
                 		public void handle(ActionEvent event) {
-					TaquinFX.test_resolve=false;
+        					TaquinFX.test_resolve=false;
                 			TaquinFX.refreshUIRandom();
                 		}
                 	});
@@ -330,4 +332,17 @@ public class HomePage extends Application {
 	}
 
 	}
+	
+	public static void displacementfalse() {
+		Label label = new Label("Deplacement Invalide !");
+		label.setTextFill(Color.RED);
+		label.setFont(new Font(20));
+		TaquinFX.gridPane.add(label, 0, 15);
+		TaquinFX.gridPane.setColumnSpan(label, 3); // Specifies that nbTurns occupies 3 columns
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(event -> TaquinFX.gridPane.getChildren().remove(label));
+        pause.play();
+    }
+	
 }
