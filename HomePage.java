@@ -20,13 +20,12 @@ import javafx.scene.paint.Color;
 
 public class HomePage extends Application {
     
-	public static int numberMove = 0;
+	//menu initialization
 	private static GridPane homepage = new GridPane();
 	static SplitPane splitPane = new SplitPane();
     private static Scene scene1 = new Scene(splitPane,900,700);
 
     public static int Index_level = 0;
-    
     private static Text Level = new Text(20,100,"#"+(Index_level+1));
     
     private  Image imageLeft = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
@@ -44,15 +43,13 @@ public class HomePage extends Application {
     private  Image Resolve = new Image(getClass().getResource("resolve.png").toExternalForm());
     private  ImageView imageViewResolve= new ImageView(Resolve);
     private static Button buttonResolve = new Button();
-
-    
+  
     private static Text nbTurns = new Text(20, 100, "NB TURNS");
-    
+    public static int numberMove = 0;
     private static Text NumberTurns = new Text(20, 100, Integer.toString(numberMove));
 
-    private static Text record = new Text(20, 100, "RECORD");
-
     
+    private static Text record = new Text(20, 100, "RECORD");
     private static Text NumberRecord ;
 
 
@@ -287,11 +284,19 @@ public class HomePage extends Application {
 	}
 	
 	public static void victory() {
+    	TaquinFX.gridPane.getChildren().clear();
+    	try {
+			TaquinFX.RUNstart();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 for (int i = 0; i < TaquinFX.gridPane.getChildren().size(); i++) {
 			 if (TaquinFX.gridPane.getChildren().get(i) instanceof Button) {
 		            Button bouton = (Button) TaquinFX.gridPane.getChildren().get(i);
 		            bouton.setStyle("-fx-background-color: chartreuse; -fx-border-color: black;");
 		        }
 	}
+
 	}
 }

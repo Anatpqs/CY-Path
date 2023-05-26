@@ -324,6 +324,7 @@ public class TaquinFX {
             	try {
             		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord()) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
             			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
+            			score = coups;
     					GestionNiveaux.sauvegarderNiveaux(levels, cheminFichier);
     					
             		}
@@ -332,7 +333,9 @@ public class TaquinFX {
 					
 					System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
 					System.out.println("NouveauRecord: " + levels.get(HomePage.Index_level).getScore());*/
-					HomePage.victory();
+					
+        			HomePage.setScore();
+        			HomePage.victory();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}                
@@ -803,7 +806,7 @@ private static Boolean solvability( ) {
 	int permutation_column_2=0;
 	int permutaion_row_2=0;
 	
-	while(Arrays.equals(grille, grid_level)) { 
+	while(grille!=grid_level) { //solution is an array of array wich contain the solution of the taquin
 		for (int row=0;row<NbrRow;row++) {
 			for (int column=0;column<NbrCol;column++) {
 			//count the number of permutation between solution and the initial state
