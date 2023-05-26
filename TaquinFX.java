@@ -803,7 +803,7 @@ private static Boolean solvability( ) {
 	int permutation_column_2=0;
 	int permutaion_row_2=0;
 	
-	while(grille!=grid_level) { //solution is an array of array wich contain the solution of the taquin
+	while(Arrays.equals(grille, grid_level)) { 
 		for (int row=0;row<NbrRow;row++) {
 			for (int column=0;column<NbrCol;column++) {
 			//count the number of permutation between solution and the initial state
