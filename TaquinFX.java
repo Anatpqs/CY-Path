@@ -454,22 +454,6 @@ public class TaquinFX {
     static void refreshUIRandom() { 	
     	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
     	shuffleRandomly();
-        for (int row = 0; row < NbrRow; row++) {
-            for (int col = 0; col < NbrCol; col++) {
-                if (grille[row][col] != 0 && grille[row][col] != -1) {
-                    Button button = new Button(Integer.toString(grille[row][col]));
-                    button.setPrefSize(TILE_SIZE, TILE_SIZE);
-                    button.setOnAction(e -> moveTile(button));
-
-                    gridPane.add(button, col, row);
-                } else if (grille[row][col] == -1) {
-                    Pane emptyPane = new Pane();
-                    emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
-                    emptyPane.getStyleClass().add("case-vide");
-                    gridPane.add(emptyPane, col, row);
-                }
-            }
-        }
     }
     
     
