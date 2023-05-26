@@ -172,6 +172,7 @@ public class HomePage extends Application {
             buttonResolve.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+			TaquinFX.test_resolve=true;
                 	TaquinFX.resolve();                }
             });
             homepage.add(buttonResolve, 1,15);
