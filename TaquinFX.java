@@ -42,7 +42,8 @@ public class TaquinFX {
     private static int NbrRow;
     private static int NbrCol;
     private static int[][] grid_level;
-
+    public static boolean test_resolve=false;
+	
     public static String cheminFichier = "/home/cytech/eclipse-workspace/testFX/src/niveau.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
     
     public static void RUNstart() throws IOException {
@@ -320,7 +321,7 @@ public class TaquinFX {
             gridPane.add(button, emptyCol, emptyRow);
 
             // Vérifier si le puzzle est résolu
-            if (estResolu()) {
+            if (estResolu() && test_resolve==false) {
             	try {
             		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord()) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
             			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
