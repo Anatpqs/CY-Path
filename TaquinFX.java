@@ -43,7 +43,6 @@ public class TaquinFX {
     private static int NbrCol;
     private static int[][] grid_level;
     public static boolean test_resolve=false;
-	
     public static String cheminFichier = "/home/cytech/eclipse-workspace/testFX/src/niveau.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
     
     public static void RUNstart() throws IOException {
@@ -807,7 +806,7 @@ private static Boolean solvability( ) {
 	int permutation_column_2=0;
 	int permutaion_row_2=0;
 	
-	while(!Arrays.deepEquals(grille, grid_level) { 
+	while(grille!=grid_level) { //solution is an array of array wich contain the solution of the taquin
 		for (int row=0;row<NbrRow;row++) {
 			for (int column=0;column<NbrCol;column++) {
 			//count the number of permutation between solution and the initial state
