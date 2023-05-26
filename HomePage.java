@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.Label;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.text.Font;
@@ -18,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class HomePage extends Application {
     
@@ -286,5 +284,14 @@ public class HomePage extends Application {
     }
 	public static int getRecord() {
 		return Integer.parseInt(NumberTurns.getText());
+	}
+	
+	public static void victory() {
+		 for (int i = 0; i < TaquinFX.gridPane.getChildren().size(); i++) {
+			 if (TaquinFX.gridPane.getChildren().get(i) instanceof Button) {
+		            Button bouton = (Button) TaquinFX.gridPane.getChildren().get(i);
+		            bouton.setStyle("-fx-background-color: chartreuse; -fx-border-color: black;");
+		        }
+	}
 	}
 }

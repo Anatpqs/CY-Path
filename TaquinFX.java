@@ -4,14 +4,11 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import javafx.scene.control.Label;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,7 +43,7 @@ public class TaquinFX {
     private static int NbrCol;
     private static int[][] grid_level;
 
-    public static String cheminFichier = "/home/cytech/eclipse-workspace/CY_slide_github/src/application/niveau.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
+    public static String cheminFichier = "/home/cytech/eclipse-workspace/testFX/src/niveau.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
     
     public static void RUNstart() throws IOException {
 	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
@@ -328,12 +325,14 @@ public class TaquinFX {
             		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord()) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
             			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
     					GestionNiveaux.sauvegarderNiveaux(levels, cheminFichier);
+    					
             		}
             		/*System.out.println("AncienRecord: "+levels.get(HomePage.Index_level).getScore());  // Code qui affiche dans la console pour une meilleur compréhension
             		System.out.println("Score: "+HomePage.getRecord());
 					
 					System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
 					System.out.println("NouveauRecord: " + levels.get(HomePage.Index_level).getScore());*/
+					HomePage.victory();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}                
@@ -831,7 +830,4 @@ private static Boolean solvability( ) {
 	else return false;
 }
 
-}
-  
-  
-  
+} 
