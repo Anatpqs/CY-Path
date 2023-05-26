@@ -168,6 +168,7 @@ public class HomePage extends Application {
                 	buttonrefreshUI1.setOnAction(new EventHandler<ActionEvent>() {
                 		@Override
                 		public void handle(ActionEvent event) {
+					TaquinFX.test_resolve=false;
                 			TaquinFX.refreshUI1();
                 		}
                 	});
@@ -176,6 +177,7 @@ public class HomePage extends Application {
                 	buttonrefreshUI2.setOnAction(new EventHandler<ActionEvent>() {
                 		@Override
                 		public void handle(ActionEvent event) {
+					TaquinFX.test_resolve=false;
                 			TaquinFX.refreshUI2();
                 		}
                 	});
@@ -184,6 +186,7 @@ public class HomePage extends Application {
                 	buttonrandom.setOnAction(new EventHandler<ActionEvent>() {
                 		@Override
                 		public void handle(ActionEvent event) {
+					TaquinFX.test_resolve=false;
                 			TaquinFX.refreshUIRandom();
                 		}
                 	});
