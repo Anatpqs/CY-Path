@@ -1,6 +1,6 @@
 # CY-Slide
 <h3>Requierements :</h3>
-
+-Compiler : javac -d bin -sourcepath src -cp src/application Main.java
 - JavaFx librairie
 - Excecute the Main.java file
 
