@@ -43,9 +43,9 @@ public class TaquinFX {
         grid = level.getGrid();
     }
     public static int score = 0;
-    //private static Button button_resolve = new Button("Resolve");
+    private static Button button_resolve = new Button("Resolve");
     
-    //Définition level
+    //Define level
     private static int NbrRow;
     private static int NbrCol;
     private static int[][] grid_level;
@@ -109,25 +109,36 @@ public class TaquinFX {
         }
     }
     
+    /**
+     * This method shuffle randomly the grid
+     * <p> We use shuffle 1 or 2, depending on the generated number
+     */
     private static void shuffleRandomly() {
     	Random random = new Random();
-        int nbAleatoire = random.nextInt(2); // Génère soit 0, soit 1
-        if(nbAleatoire == 0) {
+        int nbRandom = random.nextInt(2);
+        
+        if(nbRandom == 0) {		// We use shuffle 1 or 2, depending on the generated number							
         	refreshUI1();
         } else {
         	refreshUI2();
         }
     }
     
+    /**
+     * This method shuffle so that no tile is on the same starting square with shuffleGrid1
+     * <p> We create a copy of the original grid, we run a while to find if any tile in the shuffled grid is in the same position as the initial grid
+     */
     private static void shuffle1() {
-    	int[][] gridInit = copyMatrix(grid);
+    	int[][] gridInit = copyMatrix(grid);	// Create a copy of the original grid
     	boolean shuffleGood = false;
         while (!shuffleGood) {
-            shufflegrid1();
-            shuffleGood = true; // Supposons que le mélange est bon par défaut
+            shuffleGrid1();
+            shuffleGood = true;		// Assume that the mix is good by default
+            
+            // Check if any tile in the shuffled grid is in the same position as the initial grid
             for (int row = 0; row < gridInit.length; row++) {
                 for (int col = 0; col < gridInit[0].length; col++) {
-                    if (gridInit[row][col] == grid[row][col] && grid[row][col] != -1) {
+                    if (gridInit[row][col] == grid[row][col] && grid[row][col] != -1) {	// If a tile is in the same position, start again
                     	shuffleGood = false;
                     }
                 }
@@ -135,12 +146,16 @@ public class TaquinFX {
         }
     }
     
+    /**
+     * This method shuffle so that no tile is on the same starting square with shuffleGrid1
+     * <p> Same for shuffle1
+     */
     private static void shuffle2() {
-    	int[][] gridInit = copyMatrix(grid);
+    	int[][] gridInit = copyMatrix(grid);	
     	boolean shuffleGood = false;
         while (!shuffleGood) {
-            shufflegrid2();
-            shuffleGood = true; // Supposons que le mélange est bon par défaut
+            shuffleGrid2();
+            shuffleGood = true; 
             for (int row = 0; row < gridInit.length; row++) {
                 for (int col = 0; col < gridInit[0].length; col++) {
                     if (gridInit[row][col] == grid[row][col] && grid[row][col] != -1) {
@@ -151,49 +166,53 @@ public class TaquinFX {
         }
     }
     
-    private static void shufflegrid1(){
-        Random rand = new Random();
-        int numSwaps = 20; // Nombre d'échanges de nombres
+    /**
+     * This method shuffles the grid numbers randomly
+     */
+    private static void shuffleGrid1(){
+        Random random = new Random();
+        int nbSwap = 10;	// Number of number exchanges
         
-        nbMove = 0; // Réinitialise le compteur de nbMove à zéro
+        nbMove = 0;		// Resets nbMove counter to zero
         HomePage.setCoup(nbMove);
         
-        for (int i = 0; i < numSwaps; i++) {
+        for (int i = 0; i < nbSwap; i++) {
             int row1, col1, row2, col2;
 
-            // Rechercher une case non vide à échanger
+            // Search for a non-empty box to swap
             do {
-                row1 = rand.nextInt(NbrRow);
-                col1 = rand.nextInt(NbrCol);
+                row1 = random.nextInt(NbrRow);
+                col1 = random.nextInt(NbrCol);
             } while (grid[row1][col1] == -1);
 
-            // Rechercher une autre case non vide différente de la position initiale
+            // Search for another non-empty square different from the initial position
             do {
-                row2 = rand.nextInt(NbrRow);
-                col2 = rand.nextInt(NbrCol);
+                row2 = random.nextInt(NbrRow);
+                col2 = random.nextInt(NbrCol);
             } while (grid[row2][col2] == -1 || (row2 == row1 && col2 == col1));
 
-            // Échanger les nombres des deux positions
+            // Exchange the numbers of the two positions
             int temp = grid[row1][col1];
             grid[row1][col1] = grid[row2][col2];
             grid[row2][col2] = temp;
-            
-            
         }
     }
     
-    private static void shufflegrid2() {
-        Random rand = new Random();
-        int numMoves = 30; // Nombre de mouvements de mélange
+    /**
+     * This method shuffles in such a way as to move the tiles a certain number of times
+     */
+    private static void shuffleGrid2() {
+        Random random = new Random();
+        int nbMoves = 10; 	// Number of mixing movements
         
-        nbMove = 0; // Réinitialise le compteur de nbMove à zéro
+        nbMove = 0; 	// Resets nbMove counter to zero
         HomePage.setCoup(nbMove);
         
-        for (int i = 0; i < numMoves; i++) {
+        for (int i = 0; i < nbMoves; i++) {
             int emptyRow = -1;
             int emptyCol = -1;
 
-            // Rechercher la case vide
+            // Find the empty box
             for (int row = 0; row < NbrRow; row++) {
                 for (int col = 0; col < NbrCol; col++) {
                     if (grid[row][col] == 0) {
@@ -204,7 +223,7 @@ public class TaquinFX {
                 }
             }
 
-            // Choisir aléatoirement une tuile adjacente à la case vide
+            // Randomly select a tile adjacent to the empty square
             ArrayList<Pair<Integer, Integer>> adjacentTiles = new ArrayList<>();
             if (emptyRow > 0 && grid[emptyRow - 1][emptyCol] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow - 1, emptyCol));
@@ -219,13 +238,13 @@ public class TaquinFX {
                 adjacentTiles.add(new Pair<>(emptyRow, emptyCol + 1));
             }
 
-            int randomIndex = rand.nextInt(adjacentTiles.size());
+            int randomIndex = random.nextInt(adjacentTiles.size());
             Pair<Integer, Integer> randomTile = adjacentTiles.get(randomIndex);
 
             int tileRow = randomTile.getKey();
             int tileCol = randomTile.getValue();
 
-            // Échanger la tuile adjacente avec la case vide, en évitant les tuiles avec une valeur de -1
+            // Swap the adjacent tile with the empty square, avoiding tiles with a value of -1.
             if (grid[tileRow][tileCol] != -1) {
                 int temp = grid[tileRow][tileCol];
                 grid[tileRow][tileCol] = 0;
@@ -236,30 +255,26 @@ public class TaquinFX {
 
     
 
-
+    /**
+     * This method moves a tile
+     * @param button Tile to be moved
+     */
     private static void moveTile(Button button) {
-	    List<Level> levels = null;
-		try {
-			levels = ManageLevels.loadLevels(filePath);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
         int row = GridPane.getRowIndex(button);
         int col = GridPane.getColumnIndex(button);
-        
 
-        // Vérifier si la tuile peut être déplacée
+        // Check if the tile can be moved
         if ((row > 0 && grid[row - 1][col] == 0) ||
                 (row < NbrRow - 1 && grid[row + 1][col] == 0) ||
                 (col > 0 && grid[row][col - 1] == 0) ||
                 (col < NbrCol - 1 && grid[row][col + 1] == 0)) {
             int emptyRow = -1;
             int emptyCol = -1;
-            
-            nbMove++; // Incrémente le compteur de nbMove
+
+            nbMove++; // Increment the move counter
             HomePage.setCoup(nbMove);
 
-            // Rechercher la case vide
+            // Find the empty cell
             for (int i = 0; i < NbrRow; i++) {
                 for (int j = 0; j < NbrCol; j++) {
                     if (grid[i][j] == 0) {
@@ -270,97 +285,109 @@ public class TaquinFX {
                 }
             }
 
-            // Échanger la tuile avec la case vide
+            // Swap the tile with the empty cell
             int temp = grid[row][col];
             grid[row][col] = 0;
             grid[emptyRow][emptyCol] = temp;
 
-            // Mettre à jour les positions des boutons
+            // Update button positions
             gridPane.getChildren().remove(button);
             gridPane.add(button, emptyCol, emptyRow);
 
-            // Vérifier si le puzzle est résolu
-            if (estResolu() && test_resolve==false) {
-            	try {
-            		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord()) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
-            			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
-            			score = nbMove;
-    					ManageLevels.saveLevels(levels, filePath);
-    					
-            		}
-            		/*System.out.println("AncienRecord: "+levels.get(HomePage.Index_level).getScore());  // Code qui affiche dans la console pour une meilleur compréhension
-            		System.out.println("Score: "+HomePage.getRecord());
-					
-					System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
-					System.out.println("NouveauRecord: " + levels.get(HomePage.Index_level).getScore());*/
-					
-        			HomePage.setScore();
-        			HomePage.victory();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}                
+            // Check if the puzzle is solved
+            if (isResolved()) {
+                System.out.println("Congratulations! You have solved the puzzle!");
             }
         } else {
-            HomePage.displacementfalse();
+            System.out.println("Invalid move!");
         }
     }
     
+    /**
+     * This method manages the keyboard 
+     * @param keycode press button
+     */
     private static void handleKeyPress(KeyCode keyCode) {
-        Button button = getSelectedButton();
-        if (button != null) {
+        Button button = getSelectedButton(); // Get the currently selected button
+        if (button != null) { // If a Button is selected
             int row = GridPane.getRowIndex(button);
             int col = GridPane.getColumnIndex(button);
 
+            // If the UP key is pressed, the row is greater than 0, and the target grid cell is empty
             if (keyCode == KeyCode.UP && row > 0 && grid[row - 1][col] == 0) {
-                moveTile((Button) getNodeByRowColumnIndex(row - 1, col));
-            } else if (keyCode == KeyCode.DOWN && row < NbrRow - 1 && grid[row + 1][col] == 0) {
-                moveTile((Button) getNodeByRowColumnIndex(row + 1, col));
-            } else if (keyCode == KeyCode.LEFT && col > 0 && grid[row][col - 1] == 0) {
+                moveTile((Button) getNodeByRowColumnIndex(row - 1, col)); // Move the tile to the target position
+                
+            // If the DOWN key is pressed  
+            } else if (keyCode == KeyCode.DOWN && row < NbrRow - 1 && grid[row + 1][col] == 0) {                
+                moveTile((Button) getNodeByRowColumnIndex(row + 1, col)); 
+                
+            // If the LEFT key is pressed
+            } else if (keyCode == KeyCode.LEFT && col > 0 && grid[row][col - 1] == 0) {                // If the LEFT key is pressed
                 moveTile((Button) getNodeByRowColumnIndex(row, col - 1));
-            } else if (keyCode == KeyCode.RIGHT && col < NbrCol - 1 && grid[row][col + 1] == 0) {
+                
+            // If the RIGHT key is pressed
+            } else if (keyCode == KeyCode.RIGHT && col < NbrCol - 1 && grid[row][col + 1] == 0) {                
                 moveTile((Button) getNodeByRowColumnIndex(row, col + 1));
             }
         }
     }
-
+    
+    /**
+     * This method is used for the handleKeyPress method, which returns the node where the tile is to be moved
+     * @param row Retrieves the line of the node to be moved
+     * @param column Retrieves the column of the node to be moved
+     * @return Return the node found at the specified row and column indices, or null if not found
+     */
     private static Node getNodeByRowColumnIndex(final int row, final int column) {
-        Node result = null;
-        ObservableList<Node> children = gridPane.getChildren();
+        Node result = null; // Initialize the result as null
+        ObservableList<Node> children = gridPane.getChildren(); // Get the list of children nodes in the GridPane
 
-        for (Node node : children) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
+        for (Node node : children) { // Iterate over each node in the children list
+        	
+        	// If the row and column indices of the current node match the given row and column indices
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {                
+                result = node; // Assign the current node to the result variable
+                break; // Exit the loop since the desired node has been found
             }
         }
 
-        return result;
+        return result; // Return the node found at the specified row and column indices, or null if not found
     }
 
-
+    /**
+     * This method brings up the currently selected button
+     * @return Return the selected button or null
+     */
     private static Button getSelectedButton() {
-        for (Node node : gridPane.getChildren()) {
-            if (node instanceof Button) {
-                Button button = (Button) node;
-                if (button.isFocused()) {
-                    return button;
+        for (Node node : gridPane.getChildren()) { // Iterate over each node in the GridPane's children
+            if (node instanceof Button) { // Check if the node is an instance of Button
+                Button button = (Button) node; // Perform a type conversion to get a Button object
+                if (button.isFocused()) { // Check if the button is focused (selected)
+                    return button; // Return the selected button
                 }
             }
         }
-        return null;
+        return null; // If no button is selected, return null
     }
     
 
-  
-    private static boolean estResolu() {
-    	int[][] grid_final= grid_level;
-    	if(Arrays.deepEquals(grid,grid_final))
-    	{
-    		return true;
-    	}
-    	return false;
+    /**
+     * This method lets you know if the game has been solved.
+     * @return True if resolved, false otherwise
+     */
+    private static boolean isResolved() {
+        int[][] grid_final = grid_level; // Assign the final grid state to a new variable grid_final
+
+        // Check if the current grid is equal to the final grid using the deepEquals method of the Arrays class
+        if (Arrays.deepEquals(grid, grid_final)) {
+            return true; // Return true if the grids are equal
+        }
+        return false; // Return false if the grids are not equal
     }
-    //function for copying each element of a matrix
+    
+    /**
+     * Method for copying each element of a matrix
+     */
     private static int[][] copyMatrix(int[][] grid) {
         int[][] newGrid = new int[grid.length][grid[0].length];
         for (int i = 0; i < grid.length; i++) {
@@ -371,29 +398,42 @@ public class TaquinFX {
         return newGrid;
     }
     
-    static void refreshUI1() { 	
-    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grid
-    	shuffle1();
+    /**
+     * This method makes the shuffle1
+     */
+    static void refreshUI1() {
+        gridPane.getChildren().clear(); // Clear all nodes from the current grid
+        shuffle1(); // Shuffle the tiles in the grid with shuffle 1
+
+        // Iterate over each row and column in the grid
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
-                if (grid[row][col] != 0 && grid[row][col] != -1) {
+            	
+            	// If the value in the grid is not 0 and -1 (non-empty)
+                if (grid[row][col] != 0 && grid[row][col] != -1) {               
                     Button button = new Button(Integer.toString(grid[row][col]));
                     button.setPrefSize(TILE_SIZE, TILE_SIZE);
                     button.setOnAction(e -> moveTile(button));
-
-                    gridPane.add(button, col, row);
-                } else if (grid[row][col] == -1) {
+                    gridPane.add(button, col, row); // Add the button at the corresponding position in the gridPane
+                    
+                // If the value in the grid is -1 (empty tile)
+                } else if (grid[row][col] == -1) {                    
                     Pane emptyPane = new Pane();
                     emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
                     emptyPane.getStyleClass().add("case-vide");
-                    gridPane.add(emptyPane, col, row);
+                    gridPane.add(emptyPane, col, row); // Add the empty tile at the corresponding position in the gridPane
                 }
             }
         }
+        gridPane.add(button_resolve, 0, NbrCol + 1); // Add the solve button at a specific position in the gridPane
     }
+
     
+    /**
+     * This method makes the shuffle2
+     */
     static void refreshUI2() { 	
-    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grid
+    	gridPane.getChildren().clear(); // 
     	shuffle2();
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
@@ -411,11 +451,17 @@ public class TaquinFX {
                 }
             }
         }
+        gridPane.add(button_resolve,0,NbrCol+1);
     }
     
-    static void refreshUIRandom() { 	
-    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grid
-    	shuffleRandomly();
+   /**
+    *  This method makes the shuffle randomly
+    */
+    static void refreshUIRandom() {
+        gridPane.getChildren().clear(); 
+        shuffleRandomly(); 
+
+        gridPane.add(button_resolve, 0, NbrCol + 1); 
     }
     
     
