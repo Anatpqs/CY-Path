@@ -1,3 +1,10 @@
+/**
+ *The game, how to play, rules, shuffle, solvability
+ *
+ * @author Théo, Julian, Anatole, Andrew, Paul
+ * @version 1.0
+ */
+
 package application;
 
 import javafx.application.Application;
@@ -27,41 +34,41 @@ import java.util.PriorityQueue;
 public class TaquinFX {
 	
     private static final int TILE_SIZE = 100;
-    static int coups = HomePage.numberMove;
+    static int nbMove = HomePage.numberMove;
     
-    private static int[][] grille;
+    private static int[][] grid;
     static GridPane gridPane = new GridPane();
     public static int IndexMax ;
-    public static void setGrille(Niveau niveau) {
-        grille = niveau.getGrille();
+    public static void setGrid(Level level) {
+        grid = level.getGrid();
     }
     public static int score = 0;
     //private static Button button_resolve = new Button("Resolve");
     
-    //Définition niveau
+    //Définition level
     private static int NbrRow;
     private static int NbrCol;
     private static int[][] grid_level;
     public static boolean test_resolve=false;
-    public static String cheminFichier = "/home/cytech/eclipse-workspace/testFX/src/niveau.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer niveau.txt
+    public static String filePath = "/home/cytech/eclipse-workspace/testFX/src/level.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer level.txt
     
     public static void RUNstart() throws IOException {
-	List<Niveau> levels = GestionNiveaux.chargerNiveaux(cheminFichier);
+	List<Level> levels = GestionNiveaux.chargerNiveaux(filePath);
 	IndexMax = levels.size();
-        Niveau niveau = levels.get(HomePage.Index_level);
-        NbrRow = niveau.getLignes();
-        NbrCol = niveau.getColonnes();
-        grid_level=copyMatrix(niveau.getGrille());
-        score=niveau.getScore();
+        Level level = levels.get(HomePage.Index_level);
+        NbrRow = level.getRow();
+        NbrCol = level.getColumn();
+        grid_level=copyMatrix(level.getGrid());
+        score=level.getScore();
         
         // Boutton pour résoudre
         //gridPane.add(button_resolve,0,NbrCol+1);
         //button_resolve.setOnAction(e->resolve());
       
         
-        setGrille(niveau);
+        setGrid(level);
         
-	    displayGrid(niveau);
+	    displayGrid(level);
 	    
         
 	    gridPane.setAlignment(Pos.CENTER);   
@@ -70,26 +77,29 @@ public class TaquinFX {
 
     } 
     
-    public static void displayGrid(Niveau niveau) {
-    	setGrille(niveau);
+    /**
+     * display the grid
+ 	 *
+     * @param level, the level selected from the file
+     */
+    
+    public static void displayGrid(Level level) {
+    	setGrid(level);
         
-        int lignes = NbrRow;
-        int colonnes = NbrCol;
-        
-        // Supprime les Ã©lÃ©ments de la grille prÃ©cÃ©dente
+        // Supprime les Ã©lÃ©ments de la grid prÃ©cÃ©dente
         //gridPane.getChildren().clear();
         
-        // Adjuste la taille de la fenÃªtre suivant la taille de la grille
-        gridPane.setPrefSize(colonnes * TILE_SIZE, lignes * TILE_SIZE);        
-        for (int row = 0; row < lignes; row++) {
-            for (int col = 0; col < colonnes; col++) {
-                if (grille[row][col] != 0 && grille[row][col] != -1) {
-                    Button button = new Button(Integer.toString(grille[row][col]));
+        // Adjuste la taille de la fenÃªtre suivant la taille de la grid
+        gridPane.setPrefSize(NbrCol * TILE_SIZE, NbrRow * TILE_SIZE);        
+        for (int row = 0; row < NbrRow; row++) {
+            for (int col = 0; col < NbrCol; col++) {
+                if (grid[row][col] != 0 && grid[row][col] != -1) {
+                    Button button = new Button(Integer.toString(grid[row][col]));
                     button.setPrefSize(TILE_SIZE, TILE_SIZE);
                     button.setOnAction(e -> moveTile(button));
 
                     gridPane.add(button, col, row);
-                } else if (grille[row][col] == -1) {
+                } else if (grid[row][col] == -1) {
                     Pane emptyPane = new Pane();
                     emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
                     emptyPane.getStyleClass().add("case-vide");
@@ -97,8 +107,6 @@ public class TaquinFX {
                 }
             }
         }
-        //gridPane.add(niveauSuivantButton, 0, NbrRow); // Ajoute le bouton en bas de la grille    
-        
     }
     
     public static void displayGrid2(Niveau niveau) {
