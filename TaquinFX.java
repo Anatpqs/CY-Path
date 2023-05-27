@@ -849,9 +849,3 @@ private static boolean solvability() {
 	}
 	else return false;
 }
-		return true;
-	}
-	else return false;
-}
-
-} 
