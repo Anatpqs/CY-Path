@@ -761,61 +761,94 @@ public class TaquinFX {
     }
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
+private static int countPermutations(int[][] array1, int[][] array2) {
+        if (array1.length != array2.length) {
+            throw new IllegalArgumentException("Arrays must have the same dimensions");
+        }
 
-private static Boolean solvability( ) {
-	int tile_number = 0;
-	int permutation = 0;
-	int empty_distance = 0;
-	int column_empty_ini = 0;
-	int row_empty_ini = 0;
-	int column_empty_final = 0;
-	int row_empty_final = 0;
-	
-	for (int row=0;row<NbrRow;row++) {
-		for (int column=0;column<NbrCol;column++) {
-		//browse the array to find the empty tile the last number tile and the number of tile 
-			if (grille[row][column]==0) {
-				column_empty_ini=column;
-				row_empty_ini=row;
-			}
-			if (grille[row][column]!=-1) {
-				column_empty_final=column;
-				row_empty_final=row;
-			}
-			if (grille[row][column]>=tile_number) {
-				tile_number = grille[row][column];
-			}
-		}
-	}
-	empty_distance=Math.abs(column_empty_ini-column_empty_final)+Math.abs(row_empty_ini-row_empty_final);
-	
-	int permutaion_row = 0;
-	int permutation_column=0;
-	int permutation_column_2=0;
-	int permutaion_row_2=0;
-	
-	while(grille!=grid_level) { //solution is an array of array wich contain the solution of the taquin
-		for (int row=0;row<NbrRow;row++) {
-			for (int column=0;column<NbrCol;column++) {
-			//count the number of permutation between solution and the initial state
-				if (grille[row][column]==tile_number) {
-    				permutaion_row=row;
-    				permutation_column=column;
-    			}
-				if (grille[row][column]!=-1) {
-					permutaion_row_2=row;
-    				permutation_column_2=column;
-				}
-			}
-		}
-	//count the distance between initial state and solution 
-		grille[permutaion_row][permutation_column]=grille[permutaion_row_2][permutation_column_2];
-		grille[permutaion_row_2][permutation_column_2]=tile_number;
-		tile_number-=1;
-		permutation+=1;
-	}
-	if(permutation%2==empty_distance%2) {
+        int[] flattenedArray1 = flattenArray(array1);
+        int[] flattenedArray2 = flattenArray(array2);
+
+        if (!Arrays.equals(flattenedArray1, flattenedArray2)) {
+            throw new IllegalArgumentException("Arrays must contain the same elements");
+        }
+
+        int[] tempArray = Arrays.copyOf(flattenedArray1, flattenedArray1.length);
+        int permutationCount = 0;
+        int n = flattenedArray1.length;
+
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+
+            for (int j = i + 1; j < n; j++) {
+                if (tempArray[j] < tempArray[minIndex]) {
+                    minIndex = j;
+                }
+            }
+
+            if (minIndex != i) {
+                int temp = tempArray[i];
+                tempArray[i] = tempArray[minIndex];
+                tempArray[minIndex] = temp;
+                permutationCount++;
+            }
+        }
+
+        return permutationCount;
+    }
+
+    private static int[] flattenArray(int[][] array) {
+        int rows = array.length;
+        int columns = array[0].length;
+        int[] flattenedArray = new int[rows * columns];
+        int index = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                flattenedArray[index++] = array[i][j];
+            }
+        }
+
+        return flattenedArray;
+    }
+}
+private static boolean solvability() {
+        int tile_number = 0;
+        int permutation = 0;
+        int empty_distance = 0;
+        int column_empty_ini = 0;
+        int row_empty_ini = 0;
+        int column_empty_final = 0;
+        int row_empty_final = 0;
+
+        // Define and initialize NbrRow, NbrCol, grille, and grid_level variables
+
+        for (int row = 0; row < NbrRow; row++) {
+            for (int column = 0; column < NbrCol; column++) {
+                // Traverse the array to find the empty tile, the last number tile, and the number of tiles
+                if (grille[row][column] == 0) {
+                    column_empty_ini = column;
+                    row_empty_ini = row;
+                }
+                if (grille[row][column] != -1) {
+                    column_empty_final = column;
+                    row_empty_final = row;
+                }
+                if (grille[row][column] > tile_number) {
+                    tile_number = grille[row][column];
+                }
+            }
+        }
+        empty_distance = Math.abs(column_empty_ini - column_empty_final) + Math.abs(row_empty_ini - row_empty_final);
+
+        
+
+	if(countPermutation(grid,grid_level)%2==empty_distance%2) {
 	//the parity give the solvability
+		return true;
+	}
+	else return false;
+}
 		return true;
 	}
 	else return false;
