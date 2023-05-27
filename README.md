@@ -3,6 +3,7 @@ GRANDJEAN Théo ; BOCQ Andrew ; GOSSELIN Julian ; PAQUES Anatole ; JUMEL Paul
 ## Requierements :
 
 - Make sure you have `JavaFx` library and `JRE System` library installed 
+- create a package named "application"
 - Open a terminal in the project folder
 - To compile : `javac -d bin -sourcepath src -cp src/application Main.java`
 - To run : `java -cp bin application.Main`
