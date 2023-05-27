@@ -261,28 +261,28 @@ public class TaquinFX {
      * @param button Tile to be moved
      */
     private static void moveTile(Button button) {
-	    List<Level> levels = null;
-		try {
-			levels = ManageLevels.loadLevels(filePath);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-        int row = GridPane.getRowIndex(button);
-        int col = GridPane.getColumnIndex(button);
-        
+        List<Level> levels = null;
+        try {
+            levels = ManageLevels.loadLevels(filePath); // Load the levels from a file
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 
-        // Vérifier si la tuile peut être déplacée
+        int row = GridPane.getRowIndex(button); // Get the row index of the button in the gridPane
+        int col = GridPane.getColumnIndex(button); // Get the column index of the button in the gridPane
+
+        // Check if the tile can be moved
         if ((row > 0 && grid[row - 1][col] == 0) ||
                 (row < NbrRow - 1 && grid[row + 1][col] == 0) ||
                 (col > 0 && grid[row][col - 1] == 0) ||
                 (col < NbrCol - 1 && grid[row][col + 1] == 0)) {
             int emptyRow = -1;
             int emptyCol = -1;
-            
-            nbMove++; // Incrémente le compteur de coups
-            HomePage.setNumberMove(nbMove);
 
-            // Rechercher la case vide
+            nbMove++; // Increment the move counter
+            HomePage.setNumberMove(nbMove); // Update the UI with the new move count
+
+            // Search for the empty tile
             for (int i = 0; i < NbrRow; i++) {
                 for (int j = 0; j < NbrCol; j++) {
                     if (grid[i][j] == 0) {
@@ -293,38 +293,33 @@ public class TaquinFX {
                 }
             }
 
-            // Échanger la tuile avec la case vide
+            // Swap the tile with the empty tile
             int temp = grid[row][col];
             grid[row][col] = 0;
             grid[emptyRow][emptyCol] = temp;
 
-            // Mettre à jour les positions des boutons
+            // Update the positions of the buttons in the gridPane
             gridPane.getChildren().remove(button);
             gridPane.add(button, emptyCol, emptyRow);
 
-            // Vérifier si le puzzle est résolu
-            if (isResolved() && test_resolve==false) {
-            	try {
-            		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord() || levels.get(HomePage.Index_level).getScore() == 0) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
-            			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
-            			score = nbMove;
-    					ManageLevels.saveLevels(levels, filePath);
-    					
-            		}
-            		/*System.out.println("AncienRecord: "+levels.get(HomePage.Index_level).getScore());  // Code qui affiche dans la console pour une meilleur compréhension
-            		System.out.println("Score: "+HomePage.getRecord());
-					
-					System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
-					System.out.println("NouveauRecord: " + levels.get(HomePage.Index_level).getScore());*/
-					
-        			HomePage.setScore();
-        			HomePage.victory();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}                
+            // Check if the puzzle is solved
+            if (isResolved() && test_resolve == false) {
+                try {
+                    if (levels.get(HomePage.Index_level).getScore() > HomePage.getRecord() || levels.get(HomePage.Index_level).getScore() == 0) {
+                        // Update the score if it is higher than the previous record or if no record exists
+                        levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
+                        score = nbMove;
+                        ManageLevels.saveLevels(levels, filePath); // Save the updated levels to the file
+
+                    }    				
+                    HomePage.setScore(); // Update the UI with the new score
+                    HomePage.victory(); // Trigger the victory state in the UI
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
-            HomePage.displacementfalse();
+            HomePage.displacementfalse(); // Notify the UI that the tile cannot be moved
         }
     }
     
