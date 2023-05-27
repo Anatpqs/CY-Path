@@ -64,7 +64,7 @@ public class TaquinFX {
         
         // Boutton pour résoudre
         //gridPane.add(button_resolve,0,NbrCol+1);
-        //button_resolve.setOnAction(e->resolve());
+        button_resolve.setOnAction(e->solvability());
       
         
         setGrid(level);
@@ -486,7 +486,6 @@ public class TaquinFX {
         gridPane.getChildren().clear(); 
         shuffleRandomly(); 
 
-        gridPane.add(button_resolve, 0, NbrCol + 1); 
     }
     
     
@@ -883,6 +882,8 @@ private static boolean solvability() {
         // Define and initialize NbrRow, NbrCol, grid, and grid_level variables
 
         for (int row = 0; row < NbrRow; row++) {
+    		//System.out.println("hello");
+
             for (int column = 0; column < NbrCol; column++) {
                 // Traverse the array to find the empty tile, the last number tile, and the number of tiles
                 if (grid[row][column] == 0) {
@@ -904,9 +905,11 @@ private static boolean solvability() {
 
 	if(countPermutations(grid,grid_level)%2==empty_distance%2) {
 	//the parity give the solvability
+		System.out.println("yes");
 		return true;
 	}
 	else {
+		System.out.println("no");
 		return false;
 	}
 }
