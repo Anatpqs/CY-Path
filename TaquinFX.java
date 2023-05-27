@@ -512,20 +512,16 @@ public class TaquinFX {
     
             	int[][] newGrid=copyMatrix(next_state.get(i));
             	
-            	if(visited.contains(newGrid))
+            	if(!visited.contains(newGrid))
             	{
-            		continue;
+			//Cost calculation with the heuristic
+			int newCost=cost.get(grid_temp)+1+heuristic(newGrid);
+			State newState =new State(newGrid,newCost);
+
+			 cost.put(newGrid, newCost);
+			 parent.put(newGrid, grid_temp);
+			 list_state.add(newState);
             	}
-            	
-            	
-            	//Cost calculation with the heuristic
-            	int newCost=cost.get(grid_temp)+1+heuristic(newGrid);
-            	State newState =new State(newGrid,newCost);
-        
-            	    cost.put(newGrid, newCost);
-            	    parent.put(newGrid, grid_temp);
-            	    list_state.add(newState);
-            
             }
     	}
     }
