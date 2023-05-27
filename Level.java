@@ -46,25 +46,45 @@ public class Level {
             throw new IndexOutOfBoundsException("Coordonnées de Tuile invalides.");
         }
     }
+    /**
+     * 
+     * @return the grid
+     */
     public int[][] getGrid() {
         return grid;
     }
+    /**
+     * 
+     * @return the name
+     */
     public String getName() {
         return name;
     }
-    
+    /**
+     * 
+     * @return the row 
+     */
     public int getRow() {
         return row;
     }
-    
+    /**
+     * 
+     * @return the column
+     */
     public int getColumn() {
         return column;
     }
-    
+    /**
+     * 
+     * @return the score
+     */
     public int getScore() {
         return score;
     }
-    
+    /**
+     * Set the score
+     * @param score
+     */
     public void setScore(int score) {
         this.score = score;
     }    
