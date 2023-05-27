@@ -7,15 +7,14 @@ GRANDJEAN Théo ; BOCQ Andrew ; GOSSELIN Julian ; PAQUES Anatole ; JUMEL Paul
 - Open a terminal in the project folder
 - To compile : `javac -d bin -sourcepath src -cp src/application Main.java`
 - To run : `java -cp bin application.Main`
+## Game - How to play
+![Screen Console](screenJEU.png)
 
-
-## How to play :
-
-- There's an empty slot, so you can move a block by dragging it.
+- There's an empty slot, you can move a block in it by dragging it.
 - Simply click on a block and it will take the place of the empty slot.
 - The blocks are first shuffled, and the game is won when the initial layout is reached.
 - There are several levels, and to access them, you must pass the current level!
-- At the start, the level is in its final position; to start it, click on the button at bottom right and select your mix type.
+- At the start, the level is in its final position; to start it, click the button at bottom right on the left panel and select your mix type.
 Then solve the riddle!
 - If you get stuck, you can always click on the light bulb, which will solve the puzzle step by step. There's automatic solving, 
 or square by square.
