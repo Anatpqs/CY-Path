@@ -174,7 +174,7 @@ public class TaquinFX {
         int nbSwap = 10;	// Number of number exchanges
         
         nbMove = 0;		// Resets nbMove counter to zero
-        HomePage.setCoup(nbMove);
+        HomePage.setNumberMove(nbMove);
         
         for (int i = 0; i < nbSwap; i++) {
             int row1, col1, row2, col2;
@@ -206,7 +206,7 @@ public class TaquinFX {
         int nbMoves = 10; 	// Number of mixing movements
         
         nbMove = 0; 	// Resets nbMove counter to zero
-        HomePage.setCoup(nbMove);
+        HomePage.setNumberMove(nbMove);
         
         for (int i = 0; i < nbMoves; i++) {
             int emptyRow = -1;
@@ -260,21 +260,28 @@ public class TaquinFX {
      * @param button Tile to be moved
      */
     private static void moveTile(Button button) {
+	    List<Level> levels = null;
+		try {
+			levels = ManageLevels.loadLevels(filePath);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
         int row = GridPane.getRowIndex(button);
         int col = GridPane.getColumnIndex(button);
+        
 
-        // Check if the tile can be moved
+        // Vérifier si la tuile peut être déplacée
         if ((row > 0 && grid[row - 1][col] == 0) ||
                 (row < NbrRow - 1 && grid[row + 1][col] == 0) ||
                 (col > 0 && grid[row][col - 1] == 0) ||
                 (col < NbrCol - 1 && grid[row][col + 1] == 0)) {
             int emptyRow = -1;
             int emptyCol = -1;
+            
+            nbMove++; // Incrémente le compteur de coups
+            HomePage.setNumberMove(nbMove);
 
-            nbMove++; // Increment the move counter
-            HomePage.setCoup(nbMove);
-
-            // Find the empty cell
+            // Rechercher la case vide
             for (int i = 0; i < NbrRow; i++) {
                 for (int j = 0; j < NbrCol; j++) {
                     if (grid[i][j] == 0) {
@@ -285,21 +292,38 @@ public class TaquinFX {
                 }
             }
 
-            // Swap the tile with the empty cell
+            // Échanger la tuile avec la case vide
             int temp = grid[row][col];
             grid[row][col] = 0;
             grid[emptyRow][emptyCol] = temp;
 
-            // Update button positions
+            // Mettre à jour les positions des boutons
             gridPane.getChildren().remove(button);
             gridPane.add(button, emptyCol, emptyRow);
 
-            // Check if the puzzle is solved
-            if (isResolved()) {
-                System.out.println("Congratulations! You have solved the puzzle!");
+            // Vérifier si le puzzle est résolu
+            if (isResolved() && test_resolve==false) {
+            	try {
+            		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord() || levels.get(HomePage.Index_level).getScore() == 0) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
+            			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
+            			score = nbMove;
+    					ManageLevels.saveLevels(levels, filePath);
+    					
+            		}
+            		/*System.out.println("AncienRecord: "+levels.get(HomePage.Index_level).getScore());  // Code qui affiche dans la console pour une meilleur compréhension
+            		System.out.println("Score: "+HomePage.getRecord());
+					
+					System.out.println("Félicitations ! Vous avez résolu le puzzle du taquin !");
+					System.out.println("NouveauRecord: " + levels.get(HomePage.Index_level).getScore());*/
+					
+        			HomePage.setScore();
+        			HomePage.victory();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}                
             }
         } else {
-            System.out.println("Invalid move!");
+            HomePage.displacementfalse();
         }
     }
     
@@ -877,7 +901,7 @@ private static boolean solvability() {
 
         
 
-	if(countPermutation(grid,grid_level)%2==empty_distance%2) {
+	if(countPermutations(grid,grid_level)%2==empty_distance%2) {
 	//the parity give the solvability
 		return true;
 	}
@@ -885,4 +909,4 @@ private static boolean solvability() {
 		return false;
 	}
 }
-}
+} 
