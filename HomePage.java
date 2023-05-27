@@ -362,7 +362,7 @@ public class HomePage extends Application {
     public static void setBoardGame() {
         splitPane.getItems().remove(TaquinFX.gridPane); // remove previous game board
         TaquinFX.coups = 0;
-        setCoup(TaquinFX.coups); // set played moves to 0
+        setNumberMove(TaquinFX.coups); // set played moves to 0
         TaquinFX.gridPane.getChildren().clear();
         try {
             TaquinFX.RUNstart(); // create the new game board
@@ -376,7 +376,7 @@ public class HomePage extends Application {
      * Updates the display of the number of moves whenever a box is moved.
      * Removes the previous number and sets the new text number.
      */
-    public static void setCoup(int coup) {
+    public static void setNumberMove(int coup) {
         homepage.getChildren().remove(NumberTurns); // remove previous number
         NumberTurns.setText(Integer.toString(coup)); // create the new text number
         NumberTurns.setFont(new Font(75));
