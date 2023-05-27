@@ -1,12 +1,14 @@
-# CY-Slide
-<h3>Requierements :</h3>
+# Java Project : CY-Slide
+GRANDJEAN Théo ; BOCQ Andrew ; GOSSELIN Julian ; PAQUES Anatole ; JUMEL Paul
+## Requierements :
 
-- install JavaFx librairie
-- Compiler : javac -d bin -sourcepath src -cp src/application Main.java
-- Run : java -cp bin application.Main
+- Make sure you have `JavaFx` library and `JRE System` library installed 
+- Open a terminal in the project folder
+- To compile : `javac -d bin -sourcepath src -cp src/application Main.java`
+- To run : `java -cp bin application.Main`
 
 
-<h3>How to play :</h3> 
+## How to play :
 
 - There's an empty slot, so you can move a block by dragging it.
 - Simply click on a block and it will take the place of the empty slot.
@@ -22,4 +24,3 @@ or square by square.
 - You can play with your mouse or keyboard: simply select the square with the arrow keys, then press space or enter.
                     
                     
-GRANDJEAN THEO ; BOCQ ANDREW ; GOSSELIN JULIAN ; PAQUES ANATOLE ; JUMEL PAUL
