@@ -399,7 +399,7 @@ public class TaquinFX {
     	}
     	return false;
     }
-    
+    //function for copying each element of a matrix
     private static int[][] copyMatrix(int[][] grid) {
         int[][] newGrid = new int[grid.length][grid[0].length];
         for (int i = 0; i < grid.length; i++) {
@@ -458,17 +458,18 @@ public class TaquinFX {
     }
     
     
-  //Résolution suivant l'algo A*
+  //Solving using the A* algorithm
     static void resolve()
     {
     	
     	int[][] grid_start=copyMatrix(grille);
-    	//Grille qu'on veut atteindre
+    	//Grid we want to reach
     	int[][] grid_final=copyMatrix(grid_level);
     	
   
-        //Initialisation des différentes listes/dico necessaire 
+        //Initialization of the various lists/dictionaries required 
         PriorityQueue<State> list_state=new PriorityQueue<>();
+	//State = (grid,cost)
         State state1=new State(grid_start,heuristic(grid_start));
     	list_state.add(state1);
     	HashMap<int[][],Integer> cost = new HashMap<>();
@@ -478,15 +479,15 @@ public class TaquinFX {
     	HashSet<int[][]> visited = new HashSet<>();
     	
     	while(!list_state.isEmpty())
-    	
     	{
+		//Remove element from queue
     		int[][] grid_temp=list_state.poll().grid;
     		visited.add(grid_temp);
     		
-    		if(Arrays.deepEquals(grid_final,grid_temp)) //Si on a trouvé la solution
+    		if(Arrays.deepEquals(grid_final,grid_temp)) //If we found the solution
     		{
     			System.out.println("RESULTAT TROUVER");
-    			//Tableau des différents états pour résoudre
+    			//Table of states leading up to the solution
     			ArrayList<int[][]> path = new ArrayList<>();
     	            int[][] current = grid_temp;
     	            while (parent.containsKey(current)) {
@@ -495,17 +496,17 @@ public class TaquinFX {
     	                current = parent.get(current);
     	            }
     	           
-    	          //Afficher le déplacelement des cases
+    	          //Display tiles movement
     	          resolve_print(path);
     	          break;
     		}
     		
-    		//Liste de tous les états possible à partir de l'état où on est
+    		//List of all possible states starting from the current state
     		ArrayList<int[][]> next_state=new ArrayList<>();
     		next_state=generateNeighbors(grid_temp, visited);
     		
   
-            //Pour chaque mouvement : 
+            //For each movement : 
             for(int i=0;i<next_state.size();i++)
             {
     
@@ -517,23 +518,14 @@ public class TaquinFX {
             	}
             	
             	
-            	//Calcul du cout avec l'heuristique
+            	//Cost calculation with the heuristic
             	int newCost=cost.get(grid_temp)+1+heuristic(newGrid);
             	State newState =new State(newGrid,newCost);
-            
-            	
-            	if (cost.containsKey(newGrid)) {
-            	    int existingCost = cost.get(newGrid);
-            	    if (newCost < existingCost) {
-            	        cost.put(newGrid, newCost);
-            	        parent.put(newGrid, grid_temp);
-            	        System.out.println("test");
-            	    }
-            	} else {
+        
             	    cost.put(newGrid, newCost);
             	    parent.put(newGrid, grid_temp);
             	    list_state.add(newState);
-            	}
+            
             }
     	}
     }
@@ -542,7 +534,7 @@ public class TaquinFX {
     public static ArrayList<int[][]> generateNeighbors(int[][] grid_temp,HashSet<int[][]> visited)
     {
     	ArrayList<int[][]> next_state=new ArrayList<>();
-		// Rechercher la case vide
+		//Find empty case
 		int emptyRow=-1;
 		int emptyCol=-1;
         for (int i = 0; i < NbrRow; i++) {
@@ -555,15 +547,15 @@ public class TaquinFX {
             }
         }
        
-        //Les différents mouvements possibles
+        //The various possible movements
         if (emptyRow > 0 && grid_temp[emptyRow - 1][emptyCol] != -1)
         {
-        	//copie du tableau
+        	
         	int[][] grid_temp2 = copyMatrix(grid_temp);
         	if(!visited.contains(grid_temp2))
         	{
         	
-        	// Échanger la tuile avec la case vide
+        	// Exchange the tile with the empty case
             int temp = grid_temp2[emptyRow - 1][emptyCol];
             grid_temp2[emptyRow - 1][emptyCol] = 0;
             grid_temp2[emptyRow][emptyCol] = temp;
@@ -578,7 +570,7 @@ public class TaquinFX {
         	int[][] grid_temp3 =copyMatrix(grid_temp);
         	if(!visited.contains(grid_temp3))
         	{
-        	// Échanger la tuile avec la case vide
+        	// Exchange the tile with the empty case
             int temp = grid_temp3[emptyRow + 1][emptyCol];
             grid_temp3[emptyRow + 1][emptyCol] = 0;
             grid_temp3[emptyRow][emptyCol] = temp;
@@ -591,7 +583,7 @@ public class TaquinFX {
         	int[][] grid_temp4 = copyMatrix(grid_temp);
         	if(!visited.contains(grid_temp4))
         	{
-        	// Échanger la tuile avec la case vide
+        	// Exchange the tile with the empty case
             int temp = grid_temp4[emptyRow][emptyCol - 1];
             grid_temp4[emptyRow][emptyCol - 1] = 0;
             grid_temp4[emptyRow][emptyCol] = temp;
@@ -605,7 +597,7 @@ public class TaquinFX {
         	
         	if(!visited.contains(grid_temp5))
         	{
-        	// Échanger la tuile avec la case vide
+        	// Exchange the tile with the empty case
             int temp = grid_temp5[emptyRow][emptyCol + 1];
             grid_temp5[emptyRow][emptyCol + 1] = 0;
             grid_temp5[emptyRow][emptyCol] = temp;
@@ -620,10 +612,10 @@ public class TaquinFX {
     
    private static void resolve_print(ArrayList<int[][]> path)
     {
-    	 int delay = 600; // DurÃ©e de la pause entre chaque dÃ©placement (en millisecondes)
+    	 int delay = 600; // Duration of pause between moves (in milliseconds)
     	 SequentialTransition sequentialTransition = new SequentialTransition();
     
-    	 //Boutton pour rÃ©solution auto ou Ã©tape par Ã©tape
+    	 //Button for auto or step-by-step resolution
     	 Button resolve_auto=new Button("Auto");
     	 gridPane.add(resolve_auto,1,NbrCol+1);
 
@@ -631,9 +623,9 @@ public class TaquinFX {
     	 gridPane.add(resolve_etape,2,NbrCol+1);
     	
     	 ObservableList<Node> children = gridPane.getChildren();
-        //Affichage de toute la rÃ©solution auto
+        //Display full auto resolution
     	resolve_auto.setOnAction(a->{ 
-    		//On enlÃ¨ve l'affichage des boutons
+    		//Prevent the user from touching the button during resolution
     		gridPane.getChildren().remove(resolve_etape);
     		gridPane.getChildren().remove(resolve_auto);
 
@@ -641,14 +633,14 @@ public class TaquinFX {
     	        	node.setDisable(true);
     	        }
     		
-    		//On cherche oÃ¹ la case vide s'est dÃ©placÃ© Ã  l'Ã©tat i+1
+    		//Find where the empty cell has moved to state i+1
     		int emptyRow2= -1;
         	int emptyCol2 = -1;
         	
     	for(int i=0;i<path.size()-1;i++)
     	{   
     		
-    		  //Parcours de la grille Ã  l'Ã©tat i+1
+    		  //The grid is traversed to state i+1
     		    for (int row2 = 0; row2 < NbrRow; row2++) {
         		    for (int col2 = 0; col2 < NbrCol; col2++) {
         		    	if (path.get(i+1)[row2][col2] == 0) {
@@ -659,10 +651,10 @@ public class TaquinFX {
         		    }
     		    }
     	        
-    	//DÃ©placer	  
+    	//Move tiles  
     		    final int finalEmptyRow = emptyRow2;
     		    final int finalEmptyCol= emptyCol2;
-    		    
+    		    //Pause between each mouvement
     		    PauseTransition pause = new PauseTransition(Duration.millis(delay));
     		    
     	        pause.setOnFinished(evt -> {
@@ -671,7 +663,7 @@ public class TaquinFX {
     	        sequentialTransition.getChildren().add(pause);
 	     }
     	
-    	//Désactiver les boutons pendants la résolution
+    	//Disable buttons during resolution
     	sequentialTransition.setOnFinished(event -> {
     	    for (Node node : children) {
     	        node.setDisable(false);
@@ -682,7 +674,7 @@ public class TaquinFX {
     	});
     	
     	
-    	//Affichage Ã©tape par Ã©tape
+    	//Step by step display
     	 int[] iteration = {0};
 
     	 resolve_etape.setOnAction(a -> {
@@ -698,7 +690,7 @@ public class TaquinFX {
 
     	     if (iteration[0] < path.size() - 1) {
     	    	 
-    	         // Parcours de la grille Ã  l'Ã©tat i+1
+    	         // The grid is traversed to state i+1
     	         for (int row2 = 0; row2 < NbrRow; row2++) {
     	             for (int col2 = 0; col2 < NbrCol; col2++) {
     	                 if (path.get(iteration[0] + 1)[row2][col2] == 0) {
@@ -724,7 +716,7 @@ public class TaquinFX {
     
     }
 
-    // Calcul du coût d'un état en utilisant la distance de Manhattan
+    // Calculating the cost of a state using the Manhattan distance
     private static int heuristic(int[][] grid) {
         int cost = 0;
 
@@ -746,7 +738,7 @@ public class TaquinFX {
 
         return cost;
     }
-
+	
     private static int countLinearConflicts(int[][] grid, int row, int col, int targetRow, int targetCol) {
         int conflits = 0;
 
