@@ -6,6 +6,7 @@ import javafx.application.Application;
  * The main class of the application.
  * 
  * <p>This class contains the entry point of the application, which is the {@link #main(String[])} method.</p>
+ * @author Julian Gossselin - Theo Grandjean - Anatole Paques - Paul Jumel - Andrew Bocq
  */
 public class Main {	
     /**
