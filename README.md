@@ -1,9 +1,10 @@
 # CY-Slide
 <h3>Requierements :</h3>
--Compiler : javac -d bin -sourcepath src -cp src/application Main.java
--Run : java -cp bin application.Main
-- JavaFx librairie
-- Excecute the Main.java file
+
+- install JavaFx librairie
+- Compiler : javac -d bin -sourcepath src -cp src/application Main.java
+- Run : java -cp bin application.Main
+
 
 <h3>How to play :</h3> 
 
