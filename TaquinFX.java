@@ -458,11 +458,18 @@ public class TaquinFX {
     }
     
     
-  //Solving using the A* algorithm
+  
+    /**
+     * Solving using the A* algorithme
+     * 
+     * <p> the resolve function uses A* algorithm with a priority queue to efficiently explore and find the optimal path from the start state to the goal state while considering the cost and heuristic values.
+     * 
+     * @return list with the different step to the solution
+     */
     static void resolve()
     {
     	
-    	int[][] grid_start=copyMatrix(grille);
+    	int[][] grid_start=copyMatrix(grid);
     	//Grid we want to reach
     	int[][] grid_final=copyMatrix(grid_level);
     	
@@ -526,6 +533,14 @@ public class TaquinFX {
     	}
     }
     
+
+    /**
+     * generate the different grid possible
+     *
+     * @param grid_temp, the grid from which we look for the other possible states
+     * @param visited, list of all the state already visited
+     * @return Une description du résultat retourné par la méthode.
+     */
     
     public static ArrayList<int[][]> generateNeighbors(int[][] grid_temp,HashSet<int[][]> visited)
     {
@@ -605,6 +620,11 @@ public class TaquinFX {
         return next_state;
     }
     
+    /**
+     * Display the solution of the algorithm
+     * 
+     * @param path, list with the different grid to reach the final grid
+     */
     
    private static void resolve_print(ArrayList<int[][]> path)
     {
@@ -615,14 +635,14 @@ public class TaquinFX {
     	 Button resolve_auto=new Button("Auto");
     	 gridPane.add(resolve_auto,1,NbrCol+1);
 
-    	 Button resolve_etape=new Button(">");
-    	 gridPane.add(resolve_etape,2,NbrCol+1);
+    	 Button resolve_step=new Button(">");
+    	 gridPane.add(resolve_step,2,NbrCol+1);
     	
     	 ObservableList<Node> children = gridPane.getChildren();
         //Display full auto resolution
     	resolve_auto.setOnAction(a->{ 
     		//Prevent the user from touching the button during resolution
-    		gridPane.getChildren().remove(resolve_etape);
+    		gridPane.getChildren().remove(resolve_step);
     		gridPane.getChildren().remove(resolve_auto);
 
     	        for (Node node : children) {
@@ -673,13 +693,13 @@ public class TaquinFX {
     	//Step by step display
     	 int[] iteration = {0};
 
-    	 resolve_etape.setOnAction(a -> {
+    	 resolve_step.setOnAction(a -> {
     		 gridPane.getChildren().remove(resolve_auto);
     		 
     		 for (Node node : children) {
  	        	node.setDisable(true);
  	        }
-    		 resolve_etape.setDisable(false);
+    		 resolve_step.setDisable(false);
     		 
     	     int emptyRow2 = -1;
     	     int emptyCol2 = -1;
@@ -706,13 +726,19 @@ public class TaquinFX {
     	    	 for (Node node : children) {
     	 	        	node.setDisable(false);
     	 	        }
-    	    	 gridPane.getChildren().remove(resolve_etape);
+    	    	 gridPane.getChildren().remove(resolve_step);
     	     }
     	 });
     
     }
 
-    // Calculating the cost of a state using the Manhattan distance
+ 
+   /**
+    * Calculating the cost of a state using the Manhattan distance
+    *
+    * @param grid, matrix of the game
+    * @return cost, cost of the state
+    */
     private static int heuristic(int[][] grid) {
         int cost = 0;
 
@@ -726,8 +752,8 @@ public class TaquinFX {
 
                     int distanceManhattan = Math.abs(row - targetRow) + Math.abs(col - targetCol);
                     int linearConflicts = countLinearConflicts(grid, row, col, targetRow, targetCol);
-                    int distanceAmelioree = distanceManhattan + (2 * linearConflicts);
-                    cost += distanceAmelioree;
+                    int distanceimproved = distanceManhattan + (2 * linearConflicts);
+                    cost += distanceimproved;
                 }
             }
         }
@@ -737,13 +763,13 @@ public class TaquinFX {
 	
 	//When two tiles that should be in specific rows or columns are placed in reversed positions there is a linear conflict
     private static int countLinearConflicts(int[][] grid, int row, int col, int targetRow, int targetCol) {
-        int conflits = 0;
+        int conflicts = 0;
 
         if (row == targetRow) {
             for (int c = col + 1; c < NbrCol; c++) {
                 int value = grid[row][c];
                 if (value != 0 && value != -1 && (value - 1) / NbrRow == row && (value - 1) % NbrCol < targetCol) {
-                    conflits++;
+                    conflicts++;
                 }
             }
         }
@@ -752,12 +778,12 @@ public class TaquinFX {
             for (int r = row + 1; r < NbrRow; r++) {
                 int value = grid[r][col];
                 if (value != 0 && value != -1 && (value - 1) / NbrRow < targetRow && (value - 1) % NbrCol == col) {
-                    conflits++;
+                    conflicts++;
                 }
             }
         }
 
-        return conflits;
+        return conflicts;
     }
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
