@@ -1,7 +1,8 @@
 # CY-Slide
 <h3>Requierements :</h3>
+
 - JavaFx librairie
-- Execute the Main.java file
+- Excecute the Main.java file
 
 <h3>How to play :</h3> 
 
