@@ -109,53 +109,6 @@ public class TaquinFX {
         }
     }
     
-    public static void displayGrid2(Niveau niveau) {
-    	setGrille(niveau);
-        
-        int lignes = NbrRow;
-        int colonnes = NbrCol;
-        
-        ObservableList<Node> children = gridPane.getChildren();
-        List<Node> nodesToRemove = new ArrayList<>();
-
-        // Trouver les tuiles existantes qui doivent Ãªtre supprimÃ©es
-        for (Node node : children) {
-            Integer rowIndex = GridPane.getRowIndex(node);
-            Integer colIndex = GridPane.getColumnIndex(node);
-
-            if (rowIndex != null && colIndex != null) {
-                if (rowIndex >= lignes || colIndex >= colonnes) {
-                    nodesToRemove.add(node);
-                }
-            }
-        }
-
-        // Supprimer les tuiles inutiles
-        children.removeAll(nodesToRemove);
-
-        // Mettre Ã  jour la taille du gridPane
-        gridPane.setPrefSize(colonnes * TILE_SIZE, lignes * TILE_SIZE);
-
-        // Ajouter les nouvelles tuiles
-        for (int row = 0; row < lignes; row++) {
-            for (int col = 0; col < colonnes; col++) {
-                if (grille[row][col] != 0 && grille[row][col] != -1) {
-                    Button button = new Button(Integer.toString(grille[row][col]));
-                    button.setPrefSize(TILE_SIZE, TILE_SIZE);
-                    button.setOnAction(e -> moveTile(button));
-
-                    gridPane.add(button, col, row);
-                } else if (grille[row][col] == -1) {
-                    Pane emptyPane = new Pane();
-                    emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
-                    emptyPane.getStyleClass().add("case-vide");
-                    gridPane.add(emptyPane, col, row);
-                }
-            }
-        }
-
-    }
-    
     private static void shuffleRandomly() {
     	Random random = new Random();
         int nbAleatoire = random.nextInt(2); // Génère soit 0, soit 1
