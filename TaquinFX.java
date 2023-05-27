@@ -53,7 +53,7 @@ public class TaquinFX {
     public static String filePath = "/home/cytech/eclipse-workspace/testFX/src/level.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer level.txt
     
     public static void RUNstart() throws IOException {
-	List<Level> levels = GestionNiveaux.chargerNiveaux(filePath);
+	List<Level> levels = ManageLevels.loadLevels(filePath);
 	IndexMax = levels.size();
         Level level = levels.get(HomePage.Index_level);
         NbrRow = level.getRow();
@@ -120,14 +120,14 @@ public class TaquinFX {
     }
     
     private static void shuffle1() {
-    	int[][] grilleInit = copyMatrix(grille);
+    	int[][] gridInit = copyMatrix(grid);
     	boolean shuffleGood = false;
         while (!shuffleGood) {
-            shuffleGrille1();
+            shufflegrid1();
             shuffleGood = true; // Supposons que le mélange est bon par défaut
-            for (int row = 0; row < grilleInit.length; row++) {
-                for (int col = 0; col < grilleInit[0].length; col++) {
-                    if (grilleInit[row][col] == grille[row][col] && grille[row][col] != -1) {
+            for (int row = 0; row < gridInit.length; row++) {
+                for (int col = 0; col < gridInit[0].length; col++) {
+                    if (gridInit[row][col] == grid[row][col] && grid[row][col] != -1) {
                     	shuffleGood = false;
                     }
                 }
@@ -136,14 +136,14 @@ public class TaquinFX {
     }
     
     private static void shuffle2() {
-    	int[][] grilleInit = copyMatrix(grille);
+    	int[][] gridInit = copyMatrix(grid);
     	boolean shuffleGood = false;
         while (!shuffleGood) {
-            shuffleGrille2();
+            shufflegrid2();
             shuffleGood = true; // Supposons que le mélange est bon par défaut
-            for (int row = 0; row < grilleInit.length; row++) {
-                for (int col = 0; col < grilleInit[0].length; col++) {
-                    if (grilleInit[row][col] == grille[row][col] && grille[row][col] != -1) {
+            for (int row = 0; row < gridInit.length; row++) {
+                for (int col = 0; col < gridInit[0].length; col++) {
+                    if (gridInit[row][col] == grid[row][col] && grid[row][col] != -1) {
                     	shuffleGood = false;
                     }
                 }
@@ -151,12 +151,12 @@ public class TaquinFX {
         }
     }
     
-    private static void shuffleGrille1(){
+    private static void shufflegrid1(){
         Random rand = new Random();
         int numSwaps = 20; // Nombre d'échanges de nombres
         
-        coups = 0; // Réinitialise le compteur de coups à zéro
-        HomePage.setCoup(coups);
+        nbMove = 0; // Réinitialise le compteur de nbMove à zéro
+        HomePage.setCoup(nbMove);
         
         for (int i = 0; i < numSwaps; i++) {
             int row1, col1, row2, col2;
@@ -165,29 +165,29 @@ public class TaquinFX {
             do {
                 row1 = rand.nextInt(NbrRow);
                 col1 = rand.nextInt(NbrCol);
-            } while (grille[row1][col1] == -1);
+            } while (grid[row1][col1] == -1);
 
             // Rechercher une autre case non vide différente de la position initiale
             do {
                 row2 = rand.nextInt(NbrRow);
                 col2 = rand.nextInt(NbrCol);
-            } while (grille[row2][col2] == -1 || (row2 == row1 && col2 == col1));
+            } while (grid[row2][col2] == -1 || (row2 == row1 && col2 == col1));
 
             // Échanger les nombres des deux positions
-            int temp = grille[row1][col1];
-            grille[row1][col1] = grille[row2][col2];
-            grille[row2][col2] = temp;
+            int temp = grid[row1][col1];
+            grid[row1][col1] = grid[row2][col2];
+            grid[row2][col2] = temp;
             
             
         }
     }
     
-    private static void shuffleGrille2() {
+    private static void shufflegrid2() {
         Random rand = new Random();
         int numMoves = 30; // Nombre de mouvements de mélange
         
-        coups = 0; // Réinitialise le compteur de coups à zéro
-        HomePage.setCoup(coups);
+        nbMove = 0; // Réinitialise le compteur de nbMove à zéro
+        HomePage.setCoup(nbMove);
         
         for (int i = 0; i < numMoves; i++) {
             int emptyRow = -1;
@@ -196,7 +196,7 @@ public class TaquinFX {
             // Rechercher la case vide
             for (int row = 0; row < NbrRow; row++) {
                 for (int col = 0; col < NbrCol; col++) {
-                    if (grille[row][col] == 0) {
+                    if (grid[row][col] == 0) {
                         emptyRow = row;
                         emptyCol = col;
                         break;
@@ -206,16 +206,16 @@ public class TaquinFX {
 
             // Choisir aléatoirement une tuile adjacente à la case vide
             ArrayList<Pair<Integer, Integer>> adjacentTiles = new ArrayList<>();
-            if (emptyRow > 0 && grille[emptyRow - 1][emptyCol] != -1) {
+            if (emptyRow > 0 && grid[emptyRow - 1][emptyCol] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow - 1, emptyCol));
             }
-            if (emptyRow < NbrRow - 1 && grille[emptyRow + 1][emptyCol] != -1) {
+            if (emptyRow < NbrRow - 1 && grid[emptyRow + 1][emptyCol] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow + 1, emptyCol));
             }
-            if (emptyCol > 0 && grille[emptyRow][emptyCol - 1] != -1) {
+            if (emptyCol > 0 && grid[emptyRow][emptyCol - 1] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow, emptyCol - 1));
             }
-            if (emptyCol < NbrCol - 1 && grille[emptyRow][emptyCol + 1] != -1) {
+            if (emptyCol < NbrCol - 1 && grid[emptyRow][emptyCol + 1] != -1) {
                 adjacentTiles.add(new Pair<>(emptyRow, emptyCol + 1));
             }
 
@@ -226,10 +226,10 @@ public class TaquinFX {
             int tileCol = randomTile.getValue();
 
             // Échanger la tuile adjacente avec la case vide, en évitant les tuiles avec une valeur de -1
-            if (grille[tileRow][tileCol] != -1) {
-                int temp = grille[tileRow][tileCol];
-                grille[tileRow][tileCol] = 0;
-                grille[emptyRow][emptyCol] = temp;
+            if (grid[tileRow][tileCol] != -1) {
+                int temp = grid[tileRow][tileCol];
+                grid[tileRow][tileCol] = 0;
+                grid[emptyRow][emptyCol] = temp;
             }
         }
     }
@@ -238,9 +238,9 @@ public class TaquinFX {
 
 
     private static void moveTile(Button button) {
-	    List<Niveau> levels = null;
+	    List<Level> levels = null;
 		try {
-			levels = GestionNiveaux.chargerNiveaux(cheminFichier);
+			levels = ManageLevels.loadLevels(filePath);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -249,20 +249,20 @@ public class TaquinFX {
         
 
         // Vérifier si la tuile peut être déplacée
-        if ((row > 0 && grille[row - 1][col] == 0) ||
-                (row < NbrRow - 1 && grille[row + 1][col] == 0) ||
-                (col > 0 && grille[row][col - 1] == 0) ||
-                (col < NbrCol - 1 && grille[row][col + 1] == 0)) {
+        if ((row > 0 && grid[row - 1][col] == 0) ||
+                (row < NbrRow - 1 && grid[row + 1][col] == 0) ||
+                (col > 0 && grid[row][col - 1] == 0) ||
+                (col < NbrCol - 1 && grid[row][col + 1] == 0)) {
             int emptyRow = -1;
             int emptyCol = -1;
             
-            coups++; // Incrémente le compteur de coups
-            HomePage.setCoup(coups);
+            nbMove++; // Incrémente le compteur de nbMove
+            HomePage.setCoup(nbMove);
 
             // Rechercher la case vide
             for (int i = 0; i < NbrRow; i++) {
                 for (int j = 0; j < NbrCol; j++) {
-                    if (grille[i][j] == 0) {
+                    if (grid[i][j] == 0) {
                         emptyRow = i;
                         emptyCol = j;
                         break;
@@ -271,9 +271,9 @@ public class TaquinFX {
             }
 
             // Échanger la tuile avec la case vide
-            int temp = grille[row][col];
-            grille[row][col] = 0;
-            grille[emptyRow][emptyCol] = temp;
+            int temp = grid[row][col];
+            grid[row][col] = 0;
+            grid[emptyRow][emptyCol] = temp;
 
             // Mettre à jour les positions des boutons
             gridPane.getChildren().remove(button);
@@ -284,8 +284,8 @@ public class TaquinFX {
             	try {
             		if(levels.get(HomePage.Index_level).getScore() > HomePage.getRecord()) {  // Récupération du score, comparaison et actualisation si nouveauScord < ancienScore
             			levels.get(HomePage.Index_level).setScore(HomePage.getRecord());
-            			score = coups;
-    					GestionNiveaux.sauvegarderNiveaux(levels, cheminFichier);
+            			score = nbMove;
+    					ManageLevels.saveLevels(levels, filePath);
     					
             		}
             		/*System.out.println("AncienRecord: "+levels.get(HomePage.Index_level).getScore());  // Code qui affiche dans la console pour une meilleur compréhension
@@ -311,13 +311,13 @@ public class TaquinFX {
             int row = GridPane.getRowIndex(button);
             int col = GridPane.getColumnIndex(button);
 
-            if (keyCode == KeyCode.UP && row > 0 && grille[row - 1][col] == 0) {
+            if (keyCode == KeyCode.UP && row > 0 && grid[row - 1][col] == 0) {
                 moveTile((Button) getNodeByRowColumnIndex(row - 1, col));
-            } else if (keyCode == KeyCode.DOWN && row < NbrRow - 1 && grille[row + 1][col] == 0) {
+            } else if (keyCode == KeyCode.DOWN && row < NbrRow - 1 && grid[row + 1][col] == 0) {
                 moveTile((Button) getNodeByRowColumnIndex(row + 1, col));
-            } else if (keyCode == KeyCode.LEFT && col > 0 && grille[row][col - 1] == 0) {
+            } else if (keyCode == KeyCode.LEFT && col > 0 && grid[row][col - 1] == 0) {
                 moveTile((Button) getNodeByRowColumnIndex(row, col - 1));
-            } else if (keyCode == KeyCode.RIGHT && col < NbrCol - 1 && grille[row][col + 1] == 0) {
+            } else if (keyCode == KeyCode.RIGHT && col < NbrCol - 1 && grid[row][col + 1] == 0) {
                 moveTile((Button) getNodeByRowColumnIndex(row, col + 1));
             }
         }
@@ -354,19 +354,13 @@ public class TaquinFX {
   
     private static boolean estResolu() {
     	int[][] grid_final= grid_level;
-    	if(Arrays.deepEquals(grille,grid_final))
+    	if(Arrays.deepEquals(grid,grid_final))
     	{
     		return true;
     	}
     	return false;
     }
-   
-  
-    /**
-     * function for copying each element of a matrix
-     * @param grid, the grid you want to copy
-     * @return newGrid, a copy of grid
-     */
+    //function for copying each element of a matrix
     private static int[][] copyMatrix(int[][] grid) {
         int[][] newGrid = new int[grid.length][grid[0].length];
         for (int i = 0; i < grid.length; i++) {
@@ -378,17 +372,17 @@ public class TaquinFX {
     }
     
     static void refreshUI1() { 	
-    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
+    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grid
     	shuffle1();
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
-                if (grille[row][col] != 0 && grille[row][col] != -1) {
-                    Button button = new Button(Integer.toString(grille[row][col]));
+                if (grid[row][col] != 0 && grid[row][col] != -1) {
+                    Button button = new Button(Integer.toString(grid[row][col]));
                     button.setPrefSize(TILE_SIZE, TILE_SIZE);
                     button.setOnAction(e -> moveTile(button));
 
                     gridPane.add(button, col, row);
-                } else if (grille[row][col] == -1) {
+                } else if (grid[row][col] == -1) {
                     Pane emptyPane = new Pane();
                     emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
                     emptyPane.getStyleClass().add("case-vide");
@@ -399,17 +393,17 @@ public class TaquinFX {
     }
     
     static void refreshUI2() { 	
-    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
+    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grid
     	shuffle2();
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
-                if (grille[row][col] != 0 && grille[row][col] != -1) {
-                    Button button = new Button(Integer.toString(grille[row][col]));
+                if (grid[row][col] != 0 && grid[row][col] != -1) {
+                    Button button = new Button(Integer.toString(grid[row][col]));
                     button.setPrefSize(TILE_SIZE, TILE_SIZE);
                     button.setOnAction(e -> moveTile(button));
 
                     gridPane.add(button, col, row);
-                } else if (grille[row][col] == -1) {
+                } else if (grid[row][col] == -1) {
                     Pane emptyPane = new Pane();
                     emptyPane.setPrefSize(TILE_SIZE, TILE_SIZE);
                     emptyPane.getStyleClass().add("case-vide");
@@ -420,7 +414,7 @@ public class TaquinFX {
     }
     
     static void refreshUIRandom() { 	
-    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grille
+    	gridPane.getChildren().clear(); // Efface tous les nœuds de la grid
     	shuffleRandomly();
     }
     
@@ -804,7 +798,8 @@ private static int countPermutations(int[][] array1, int[][] array2) {
 
         return flattenedArray;
     }
-}
+
+
 private static boolean solvability() {
         int tile_number = 0;
         int permutation = 0;
@@ -814,21 +809,21 @@ private static boolean solvability() {
         int column_empty_final = 0;
         int row_empty_final = 0;
 
-        // Define and initialize NbrRow, NbrCol, grille, and grid_level variables
+        // Define and initialize NbrRow, NbrCol, grid, and grid_level variables
 
         for (int row = 0; row < NbrRow; row++) {
             for (int column = 0; column < NbrCol; column++) {
                 // Traverse the array to find the empty tile, the last number tile, and the number of tiles
-                if (grille[row][column] == 0) {
+                if (grid[row][column] == 0) {
                     column_empty_ini = column;
                     row_empty_ini = row;
                 }
-                if (grille[row][column] != -1) {
+                if (grid[row][column] != -1) {
                     column_empty_final = column;
                     row_empty_final = row;
                 }
-                if (grille[row][column] > tile_number) {
-                    tile_number = grille[row][column];
+                if (grid[row][column] > tile_number) {
+                    tile_number = grid[row][column];
                 }
             }
         }
@@ -836,7 +831,7 @@ private static boolean solvability() {
 
         
 
-	if(countPermutation(grille,grid_level)%2==empty_distance%2) {
+	if(countPermutation(grid,grid_level)%2==empty_distance%2) {
 	//the parity give the solvability
 		return true;
 	}
