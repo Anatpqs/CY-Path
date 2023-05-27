@@ -360,7 +360,13 @@ public class TaquinFX {
     	}
     	return false;
     }
-    //function for copying each element of a matrix
+   
+  
+    /**
+     * function for copying each element of a matrix
+     * @param grid, the grid you want to copy
+     * @return newGrid, a copy of grid
+     */
     private static int[][] copyMatrix(int[][] grid) {
         int[][] newGrid = new int[grid.length][grid[0].length];
         for (int i = 0; i < grid.length; i++) {
