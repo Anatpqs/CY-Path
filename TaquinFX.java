@@ -847,6 +847,8 @@ private static boolean solvability() {
 	//the parity give the solvability
 		return true;
 	}
-	else return false;
+	else {
+		return false;
+	}
 }
 }
