@@ -21,42 +21,82 @@ import javafx.scene.paint.Color;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
+
+/**
+ * class that will generate the game menu and the game board on the same window
+ * initialization of each image, and each button with methods that will change certain fields over time
+ * 
+ * 
+ * @author Théo
+ * @version 1.0
+ */
+
 public class HomePage extends Application {
     
-	//menu initialization
+	
+	
+	/**
+	 * menu initialization
+	 */
 	private static GridPane homepage = new GridPane();
 	static SplitPane splitPane = new SplitPane();
     private static Scene scene1 = new Scene(splitPane,900,700);
 
+    /**
+     * Index of the level 
+     */
     public static int Index_level = 0;
     private static Text Level = new Text(20,100,"#"+(Index_level+1));
     
-	// Images and buttons for navigation
-    private  Image imageLeft = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
-    private  ImageView imageViewLeft = new ImageView(imageLeft);
+	/**
+	 * Images and buttons for navigation
+	 */
+    private  Image Leftpicutre = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
+    private  ImageView ViewPictureLeft = new ImageView(Leftpicutre);
     private static Button buttonLeft = new Button();
     
+    
+    private Image PictureRight = new Image(getClass().getResource("LevelRight.png").toExternalForm());
+    private ImageView ViewPictureRight = new ImageView(PictureRight);
+    private static Button buttonRight = new Button();
+    
     private  Image Rules = new Image(getClass().getResource("Rules.png").toExternalForm());
-    private  ImageView imageViewRules= new ImageView(Rules);
+    private  ImageView ViewPictureRules= new ImageView(Rules);
     private static Button buttonRules = new Button();
     
     private  Image Reset = new Image(getClass().getResource("Reset.png").toExternalForm());
-    private  ImageView imageViewReset= new ImageView(Reset);
+    private  ImageView ViewPictureReset= new ImageView(Reset);
     private static Button buttonReset = new Button();
     
     private  Image Resolve = new Image(getClass().getResource("resolve.png").toExternalForm());
-    private  ImageView imageViewResolve= new ImageView(Resolve);
+    private  ImageView ViewPictureResolve= new ImageView(Resolve);
     private static Button buttonResolve = new Button();
   
+    /**
+     * Title for the number of move
+     */
     private static Text nbTurns = new Text(20, 100, "NB TURNS");
     public static int numberMove = 0;
+    /**
+     * Number of move
+     */
     private static Text NumberTurns = new Text(20, 100, Integer.toString(numberMove));
 
-    
+    /**
+     * Title for the record
+     */
     private static Text record = new Text(20, 100, "RECORD");
+    /**
+     * Record
+     */
     private static Text NumberRecord ;
 
-
+    /**
+     * start function which starts the project and creates the main window
+     * 
+     * @param primaryStage main window
+     * @throws exceptions by printing the stack trace
+     */
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -84,10 +124,20 @@ public class HomePage extends Application {
 
             
             // Previous level button
-            buttonLeft.setGraphic(imageViewLeft);
+            buttonLeft.setGraphic(ViewPictureLeft);
             buttonLeft.setStyle("-fx-background-color: black");
             GridPane.setHalignment(Level, HPos.LEFT);
             GridPane.setMargin(buttonLeft, new Insets(0, 0, 0, 10));
+            /**
+             * Sets an event handler for the "Left" button.
+             *
+             * <p>This event handler is triggered when the "Left" button is clicked. It decrements the level index (until it reaches 0),
+             * refreshes the page by updating the level, score, and game board.</p>
+             *
+             * <p>Note: The "Left" button is assumed to be associated with the variable "buttonLeft".</p>
+             *
+             * @param event the event representing the button click
+             */
             buttonLeft.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -104,32 +154,41 @@ public class HomePage extends Application {
 
 
             // Next level button
-            Image imageRight = new Image(getClass().getResource("LevelRight.png").toExternalForm());
-            ImageView imageViewRight = new ImageView(imageRight);
-            Button buttonRight = new Button();
-            buttonRight.setGraphic(imageViewRight);
+            buttonRight.setGraphic(ViewPictureRight);
             buttonRight.setStyle("-fx-background-color: black");           
             GridPane.setHalignment(Level, HPos.RIGHT);
             GridPane.setMargin(buttonRight, new Insets(0, 0, 0, 10));
+            
+            /**
+             * Sets an event handler for the "Right" button.
+             *
+             * <p>This event handler is triggered when the "Right" button is clicked. It increments the level index (up to the maximum level
+             * minus one) and refreshes the page by updating the level, score, and game board.</p>
+             *
+             * <p>Note: The "Right" button is assumed to be associated with the variable "buttonRight".</p>
+             *
+             * @param event the event representing the button click
+             */
             buttonRight.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                	// Level increment (up to level max-1) then page refresh
-                	if(TaquinFX.score != 0) {
-                		if(Index_level < TaquinFX.IndexMax-1) {
-                    		Index_level++;
-                        	setLevel();
-                        	setScore();
-                        	setBoardGame();
-                    	}
-                	}
-                	}
+                    // Level increment (up to level max-1) then page refresh
+                    if (TaquinFX.score != 0) {
+                        if (Index_level < TaquinFX.IndexMax - 1) {
+                            Index_level++;
+                            setLevel();
+                            setScore();
+                            setBoardGame();
+                        }
+                    }
+                }
             });
+
             homepage.add(buttonRight, 2, 0);
 
             
             // Rules
-            buttonRules.setGraphic(imageViewRules);
+            buttonRules.setGraphic(ViewPictureRules);
             buttonRules.setStyle("-fx-background-color: black"); 
             buttonRules.setOnAction(event -> {
                 Label label = new Label("Le taquin\n"
@@ -164,8 +223,26 @@ public class HomePage extends Application {
             
             
             //Random's type
-            buttonReset.setGraphic(imageViewReset);
-            buttonReset.setStyle("-fx-background-color: black");   
+            buttonReset.setGraphic(ViewPictureReset);
+            buttonReset.setStyle("-fx-background-color: black");  
+            /**
+             * Sets an event handler for the "Reset" button.
+             *
+             * <p>This event handler is triggered when the "Reset" button is clicked. It creates and configures three additional buttons:
+             * "Melange 1", "Melange 2", and "Random". Each button has its own event handler that performs a specific action when clicked.</p>
+             *
+             * <p>The "Melange 1" button triggers the {@link TaquinFX#refreshUI1()} method, which refreshes the user interface by performing
+             * a specific shuffling operation.</p>
+             *
+             * <p>The "Melange 2" button triggers the {@link TaquinFX#refreshUI2()} method, which refreshes the user interface by performing
+             * another shuffling operation.</p>
+             *
+             * <p>The "Random" button triggers the {@link TaquinFX#refreshUIRandom()} method, which refreshes the user interface by performing
+             * a random shuffling operation.</p>
+             *
+             *
+             * @param event the event representing the button click
+             */
             buttonReset.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -204,27 +281,27 @@ public class HomePage extends Application {
             homepage.add(buttonReset, 2,15);
             
             // Resolve button
-            buttonResolve.setGraphic(imageViewResolve);
-            buttonResolve.setStyle("-fx-background-color: black");   
+            buttonResolve.setGraphic(ViewPictureResolve);
+            buttonResolve.setStyle("-fx-background-color: black"); 
+            /**
+             * Sets an event handler for the "Resolve" button.
+             *
+             * <p>This event handler is triggered when the "Resolve" button is clicked. It performs the following actions:</p>
+             *
+             * <ol>
+             *   <li>Sets the boolean flag {@link TaquinFX#test_resolve} to <code>true</code>.</li>
+             *   <li>Invokes the {@link TaquinFX#resolve()} method, which executes the logic to resolve the puzzle.</li>
+             * </ol>
+             *
+             * <p>Note: The "Resolve" button is assumed to be associated with the variable "buttonResolve".</p>
+             *
+             * @param event the event representing the button click
+             */
             buttonResolve.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                 	TaquinFX.test_resolve=true;
-                	try {
-                		TaquinFX.resolve();    
-                	} catch (OutOfMemoryError e) {
-                		Label label = new Label("Erreur mémoire"); //creation message and set color red
-                		label.setTextFill(Color.RED);
-                		label.setFont(new Font(20));
-                		TaquinFX.gridPane.add(label, 0, 15); // add the message
-                		TaquinFX.gridPane.setColumnSpan(label, 3); // Specifies that nbTurns occupies 3 columns
-
-                        PauseTransition pause = new PauseTransition(Duration.seconds(4)); //
-                        pause.setOnFinished(evt -> TaquinFX.gridPane.getChildren().remove(label)); // after 1 seconde delete the message
-                        pause.play();
-                        System.out.println("erreur mémoire");
-                	}             
-		}
+                	TaquinFX.resolve();                }
             });
             homepage.add(buttonResolve, 1,15);
             
@@ -278,84 +355,106 @@ public class HomePage extends Application {
         }
     }
     
-    // Change of game board at each level change
+    /**
+     * Changes the game board when the level changes.
+     * Removes the previous game board and creates a new one.
+     */
     public static void setBoardGame() {
-    	splitPane.getItems().remove(TaquinFX.gridPane); //remove previous game board
-    	TaquinFX.coups = 0;
-    	setCoup(TaquinFX.coups); // set played moves to 0
-    	TaquinFX.gridPane.getChildren().clear(); 
-    	try {
-			TaquinFX.RUNstart(); // creation of the new game board
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	splitPane.getItems().add(TaquinFX.gridPane); //add the new game board
-    	
+        splitPane.getItems().remove(TaquinFX.gridPane); // remove previous game board
+        TaquinFX.coups = 0;
+        setCoup(TaquinFX.coups); // set played moves to 0
+        TaquinFX.gridPane.getChildren().clear();
+        try {
+            TaquinFX.RUNstart(); // create the new game board
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        splitPane.getItems().add(TaquinFX.gridPane); // add the new game board
     }
-    
-    // Change of the display of the number of moves at each box moved
+
+    /**
+     * Updates the display of the number of moves whenever a box is moved.
+     * Removes the previous number and sets the new text number.
+     */
     public static void setCoup(int coup) {
-    	homepage.getChildren().remove(NumberTurns); //remove previous number
-        NumberTurns.setText(Integer.toString(coup));	// creation of the new text number
-    	NumberTurns.setFont(new Font(75));
+        homepage.getChildren().remove(NumberTurns); // remove previous number
+        NumberTurns.setText(Integer.toString(coup)); // create the new text number
+        NumberTurns.setFont(new Font(75));
         NumberTurns.setFill(Color.WHITE);
         GridPane.setHalignment(NumberTurns, HPos.CENTER);
         GridPane.setMargin(NumberTurns, new Insets(0, 10, 0, 0));
         homepage.add(NumberTurns, 1, 6); // add the new text number
     }
-    
-    // Change of the display of the index level
+
+    /**
+     * Updates the display of the level index.
+     * Removes the previous number and sets the new text number.
+     */
     public static void setLevel() {
-    	homepage.getChildren().remove(Level); //remove previous number
-        Level.setText("#"+ (Index_level+1));		// creation of the new text number
+        homepage.getChildren().remove(Level); // remove previous number
+        Level.setText("#" + (Index_level + 1)); // create the new text number
         Level.setFont(new Font(75));
-        Level.setFill(Color.WHITE);  
+        Level.setFill(Color.WHITE);
         GridPane.setHalignment(Level, HPos.CENTER);
         GridPane.setMargin(Level, new Insets(0, 10, 0, 0));
         homepage.add(Level, 1, 0); // add the new text number
     }
-    
-    // Change of the display of the score at each level's change
+
+    /**
+     * Updates the display of the score whenever the level changes.
+     * Removes the previous number and sets the new text number.
+     * 
+     * @throws IOException if an error occurs while reading the file
+     */
     public static void setScore() {
-    	homepage.getChildren().remove(NumberRecord); //remove previous number
-    	try {
-			TaquinFX.RUNstart(); // the record is loaded when creating the game board
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	NumberRecord.setText(Integer.toString(TaquinFX.score));	// creation of the new text number
-    	NumberRecord.setFont(new Font(75));
+        homepage.getChildren().remove(NumberRecord); // remove previous number
+        try {
+            TaquinFX.RUNstart(); // the record is loaded when creating the game board
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        NumberRecord.setText(Integer.toString(TaquinFX.score)); // create the new text number
+        NumberRecord.setFont(new Font(75));
         NumberRecord.setFill(Color.WHITE);
         GridPane.setHalignment(NumberRecord, HPos.CENTER);
         GridPane.setMargin(NumberRecord, new Insets(0, 10, 0, 0));
         homepage.add(NumberRecord, 1, 10); // add the new text number
     }
-    
-    // Returns the number of moves currently played to become the new record
-	public static int getRecord() {
-		return Integer.parseInt(NumberTurns.getText());
-	}
-	
-	// When the player passes the level it turns green
-	public static void victory() {
-    	TaquinFX.gridPane.getChildren().clear(); //	remove previous number
-    	try {
-			TaquinFX.RUNstart(); //creation new gameboard
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		 for (int i = 0; i < TaquinFX.gridPane.getChildren().size(); i++) {
-			 if (TaquinFX.gridPane.getChildren().get(i) instanceof Button) {
-		            Button button = (Button) TaquinFX.gridPane.getChildren().get(i);
-		            button.setStyle("-fx-background-color: chartreuse; -fx-border-color: black;"); //give to each button the color green
-		        }
-	}
 
-	}
+    /**
+     * Returns the number of moves currently played to become the new record.
+     * @return The number of moves played.
+     */
+    public static int getRecord() {
+        return Integer.parseInt(NumberTurns.getText());
+    }
+
+    /**
+     * Changes the appearance of the game board when the player wins the level.
+     * Clears the game board and creates a new one with buttons colored green.
+     * 
+     * @throws IOException if an error occurs while reading the file
+     */
+    public static void victory() {
+        TaquinFX.gridPane.getChildren().clear(); // remove previous number
+        try {
+            TaquinFX.RUNstart(); // create new game board
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < TaquinFX.gridPane.getChildren().size(); i++) {
+            if (TaquinFX.gridPane.getChildren().get(i) instanceof Button) {
+                Button button = (Button) TaquinFX.gridPane.getChildren().get(i);
+                button.setStyle("-fx-background-color: chartreuse; -fx-border-color: black;"); // give each button the color green
+            }
+        }
+    }
+
 	
-	// When the player clicks on an invalid move a message appears in red
+	/**
+	 * Displays a message in red when the player makes an invalid move.
+	 * The message is displayed for 1 second before being deleted.
+	 */
 	public static void displacementfalse() {
 		Label label = new Label("Deplacement Invalide !"); //creation message and set color red
 		label.setTextFill(Color.RED);
