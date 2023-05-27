@@ -843,7 +843,7 @@ private static boolean solvability() {
 
         
 
-	if(countPermutation(grid,grid_level)%2==empty_distance%2) {
+	if(countPermutation(grille,grid_level)%2==empty_distance%2) {
 	//the parity give the solvability
 		return true;
 	}
