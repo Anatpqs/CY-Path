@@ -735,6 +735,7 @@ public class TaquinFX {
         return cost;
     }
 	
+	//When two tiles that should be in specific rows or columns are placed in reversed positions there is a linear conflict
     private static int countLinearConflicts(int[][] grid, int row, int col, int targetRow, int targetCol) {
         int conflits = 0;
 
