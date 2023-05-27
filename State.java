@@ -3,7 +3,7 @@ package application;
 /**
  * State of the grid, with the cost, we used this to implement a priority queue with the A* algorithm
  *
- * @author Anatole
+ *  @author Théo, Julian, Anatole, Andrew, Paul
  * @version 1.0
  */
 public class State implements Comparable<State> {
