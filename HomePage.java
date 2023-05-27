@@ -210,7 +210,21 @@ public class HomePage extends Application {
                 @Override
                 public void handle(ActionEvent event) {
                 	TaquinFX.test_resolve=true;
-                	TaquinFX.resolve();                }
+                	try {
+                		TaquinFX.resolve();    
+                	} catch (OutOfMemoryError e) {
+                		Label label = new Label("Erreur mémoire"); //creation message and set color red
+                		label.setTextFill(Color.RED);
+                		label.setFont(new Font(20));
+                		TaquinFX.gridPane.add(label, 0, 15); // add the message
+                		TaquinFX.gridPane.setColumnSpan(label, 3); // Specifies that nbTurns occupies 3 columns
+
+                        PauseTransition pause = new PauseTransition(Duration.seconds(4)); //
+                        pause.setOnFinished(evt -> TaquinFX.gridPane.getChildren().remove(label)); // after 1 seconde delete the message
+                        pause.play();
+                        System.out.println("erreur mémoire");
+                	}             
+		}
             });
             homepage.add(buttonResolve, 1,15);
             
