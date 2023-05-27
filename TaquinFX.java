@@ -53,8 +53,9 @@ public class TaquinFX {
     public static String filePath = "/home/cytech/eclipse-workspace/testFX/src/level.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer level.txt
     
     public static void RUNstart() throws IOException {
-	List<Level> levels = ManageLevels.loadLevels(filePath);
-	IndexMax = levels.size();
+    	List<Level> levels = ManageLevels.loadLevels(filePath);
+		IndexMax = levels.size();
+		test_resolve=false;
         Level level = levels.get(HomePage.Index_level);
         NbrRow = level.getRow();
         NbrCol = level.getColumn();

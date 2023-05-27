@@ -361,8 +361,8 @@ public class HomePage extends Application {
      */
     public static void setBoardGame() {
         splitPane.getItems().remove(TaquinFX.gridPane); // remove previous game board
-        TaquinFX.coups = 0;
-        setNumberMove(TaquinFX.coups); // set played moves to 0
+        TaquinFX.nbMove = 0;
+        setNumberMove(TaquinFX.nbMove); // set played moves to 0
         TaquinFX.gridPane.getChildren().clear();
         try {
             TaquinFX.RUNstart(); // create the new game board
