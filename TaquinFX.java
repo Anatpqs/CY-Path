@@ -29,27 +29,59 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Arrays;
 import java.util.PriorityQueue;
-
+/**
+ *The game, how to play, rules, shuffle, solvability
+ *
+ * @author Théo, Julian, Anatole, Andrew, Paul
+ * @version 1.0
+ */
 public class TaquinFX {
-	
+	/**
+	 * size of the tiles
+	 */
     private static final int TILE_SIZE = 100;
+	 /**
+     * number of move
+     */
     static int nbMove = HomePage.numberMove;
-    
+    /**
+     * grid of the level
+     */
     private static int[][] grid;
     static GridPane gridPane = new GridPane();
+	/**
+     * number of level
+     */
     public static int IndexMax ;
+	 /**
+	*
+    *Sets the grid of the current level.
+    *@param level The level object containing the grid.
+    */
     public static void setGrid(Level level) {
         grid = level.getGrid();
     }
+	 /**
+     * record
+     */
     public static int score = 0;
     
     //Define level
     private static int NbrRow;
     private static int NbrCol;
     private static int[][] grid_level;
+	/**
+     * variable to know who solved the game, player or resolve button
+     */
     public static boolean test_resolve=false;
+	 /**
+     * filepath for the document where there are all our levels
+     */
     public static String filePath = "/home/cytech/eclipse-workspace/Slide_v4/src/application/level.txt";  //  /!\ /!\ To change depending on where you put level.txt
-    
+     /**
+     * create the boardgame and the gridpane
+     * @throws IOException if an error occurs while reading the file
+     */
     public static void RUNstart() throws IOException {
     	List<Level> levels = ManageLevels.loadLevels(filePath);
 		IndexMax = levels.size();
