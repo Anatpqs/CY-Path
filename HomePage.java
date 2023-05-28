@@ -20,7 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
-
+import javafx.geometry.Pos;
 
 /**
  * class that will generate the game menu and the game board on the same window
