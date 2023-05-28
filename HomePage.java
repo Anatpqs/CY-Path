@@ -51,24 +51,24 @@ public class HomePage extends Application {
 	/**
 	 * Images and buttons for navigation
 	 */
-    private  Image Leftpicutre = new Image(getClass().getResource("LevelLeft.png").toExternalForm());
+    private  Image Leftpicutre = new Image(getClass().getResource("style/LevelLeft.png").toExternalForm());
     private  ImageView ViewPictureLeft = new ImageView(Leftpicutre);
     private static Button buttonLeft = new Button();
     
     
-    private Image PictureRight = new Image(getClass().getResource("LevelRight.png").toExternalForm());
+    private Image PictureRight = new Image(getClass().getResource("style/LevelRight.png").toExternalForm());
     private ImageView ViewPictureRight = new ImageView(PictureRight);
     private static Button buttonRight = new Button();
     
-    private  Image Rules = new Image(getClass().getResource("Rules.png").toExternalForm());
+    private  Image Rules = new Image(getClass().getResource("style/Rules.png").toExternalForm());
     private  ImageView ViewPictureRules= new ImageView(Rules);
     private static Button buttonRules = new Button();
     
-    private  Image Reset = new Image(getClass().getResource("Reset.png").toExternalForm());
+    private  Image Reset = new Image(getClass().getResource("style/Reset.png").toExternalForm());
     private  ImageView ViewPictureReset= new ImageView(Reset);
     private static Button buttonReset = new Button();
     
-    private  Image Resolve = new Image(getClass().getResource("resolve.png").toExternalForm());
+    private  Image Resolve = new Image(getClass().getResource("style/resolve.png").toExternalForm());
     private  ImageView ViewPictureResolve= new ImageView(Resolve);
     private static Button buttonResolve = new Button();
   
@@ -112,7 +112,7 @@ public class HomePage extends Application {
 
             
 			// Styling
-            scene1.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            scene1.getStylesheets().add(getClass().getResource("style/application.css").toExternalForm());
             homepage.getStyleClass().add("my-gridpane");
             homepage.setStyle("-fx-background-color: black;");
             
