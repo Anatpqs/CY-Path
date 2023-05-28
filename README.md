@@ -24,4 +24,5 @@ or square by square.
 - Black squares are forbidden: you can't go on them.
 - You can play with your mouse or keyboard: simply select the square with the arrow keys, then press space or enter.
                     
-                    
+## Javadoc
+Open the file "application"
