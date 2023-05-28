@@ -813,99 +813,91 @@ public class TaquinFX {
     }
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
-private static int countPermutations(int[][] array1, int[][] array2) {
-        if (array1.length != array2.length) {
-            throw new IllegalArgumentException("Arrays must have the same dimensions");
-        }
+/**
+ * Determines if a given grid is solvable.
+ *
+ * @param grid The 2D array representing the grid.
+ * @return {@code true} if the grid is solvable, {@code false} otherwise.
+ */
+public static boolean isSolvable(int[][] grid) {
+    int gridSize = NbrRow * NbrCol;
+    int[] flattenedGrid = flattenGrid(grid);
+    int inversions = countInversions(flattenedGrid);
+    int blankRow = findBlankRow(grid);
 
-        int[] flattenedArray1 = flattenArray(array1);
-        int[] flattenedArray2 = flattenArray(array2);
-
-        if (!Arrays.equals(flattenedArray1, flattenedArray2)) {
-            throw new IllegalArgumentException("Arrays must contain the same elements");
-        }
-
-        int[] tempArray = Arrays.copyOf(flattenedArray1, flattenedArray1.length);
-        int permutationCount = 0;
-        int n = flattenedArray1.length;
-
-        for (int i = 0; i < n - 1; i++) {
-            int minIndex = i;
-
-            for (int j = i + 1; j < n; j++) {
-                if (tempArray[j] < tempArray[minIndex]) {
-                    minIndex = j;
-                }
-            }
-
-            if (minIndex != i) {
-                int temp = tempArray[i];
-                tempArray[i] = tempArray[minIndex];
-                tempArray[minIndex] = temp;
-                permutationCount++;
-            }
-        }
-
-        return permutationCount;
+    if (gridSize % 2 == 1) {
+        // For an odd-sized grid, the game is solvable if the number of inversions is even.
+        return inversions % 2 == 0;
+    } else {
+        // For an even-sized grid, the game is solvable if the following conditions are met:
+        // - the number of inversions is even
+        // - the row of the blank tile (counted from the bottom) is odd
+        return (inversions % 2 == 0) == (blankRow % 2 == 1);
     }
-
-    private static int[] flattenArray(int[][] array) {
-        int rows = array.length;
-        int columns = array[0].length;
-        int[] flattenedArray = new int[rows * columns];
-        int index = 0;
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                flattenedArray[index++] = array[i][j];
-            }
-        }
-
-        return flattenedArray;
-    }
-
-
-private static boolean solvability() {
-        int tile_number = 0;
-        int permutation = 0;
-        int empty_distance = 0;
-        int column_empty_ini = 0;
-        int row_empty_ini = 0;
-        int column_empty_final = 0;
-        int row_empty_final = 0;
-
-        // Define and initialize NbrRow, NbrCol, grid, and grid_level variables
-
-        for (int row = 0; row < NbrRow; row++) {
-    		//System.out.println("hello");
-
-            for (int column = 0; column < NbrCol; column++) {
-                // Traverse the array to find the empty tile, the last number tile, and the number of tiles
-                if (grid[row][column] == 0) {
-                    column_empty_ini = column;
-                    row_empty_ini = row;
-                }
-                if (grid[row][column] != -1) {
-                    column_empty_final = column;
-                    row_empty_final = row;
-                }
-                if (grid[row][column] > tile_number) {
-                    tile_number = grid[row][column];
-                }
-            }
-        }
-        empty_distance = Math.abs(column_empty_ini - column_empty_final) + Math.abs(row_empty_ini - row_empty_final);
-
-        
-
-	if(countPermutations(grid,grid_level)%2==empty_distance%2) {
-	//the parity give the solvability
-		System.out.println("yes");
-		return true;
-	}
-	else {
-		System.out.println("no");
-		return false;
-	}
 }
+
+/**
+ * Flattens the 2D grid into a 1D array.
+ *
+ * @param grid The 2D array representing the grid.
+ * @return The flattened grid as a 1D array.
+ */
+private static int[] flattenGrid(int[][] grid) {
+    int gridSize = NbrRow * NbrCol;
+    int[] flattenedGrid = new int[gridSize];
+    int index = 0;
+    for (int i = 0; i < grid.length; i++) {
+        for (int j = 0; j < grid[0].length; j++) {
+            flattenedGrid[index] = grid[i][j];
+            index++;
+        }
+    }
+    return flattenedGrid;
+}
+
+/**
+ * Counts the number of inversions in the flattened grid.
+ *
+ * @param flattenedGrid The flattened grid as a 1D array.
+ * @return The number of inversions in the grid.
+ */
+private static int countInversions(int[] flattenedGrid) {
+    int inversions = 0;
+    for (int i = 0; i < flattenedGrid.length - 1; i++) {
+        for (int j = i + 1; j < flattenedGrid.length; j++) {
+            if (flattenedGrid[i] > flattenedGrid[j] && flattenedGrid[i] != 0 && flattenedGrid[j] != 0) {
+                inversions++;
+            }
+        }
+    }
+    return inversions;
+}
+
+/**
+ * Finds the row of the blank tile in the grid.
+ *
+ * @param grid The 2D array representing the grid.
+ * @return The row of the blank tile (counted from the bottom). Returns -1 if the blank tile is not found.
+ */
+private static int findBlankRow(int[][] grid) {
+    for (int i = grid.length - 1; i >= 0; i--) {
+        for (int j = 0; j < grid[0].length; j++) {
+            if (grid[i][j] == 0) {
+                return grid.length - i;
+            }
+        }
+    }
+    return -1; // Returns -1 if the blank tile is not found (this case should not occur)
+}
+
+/**
+ * Prints whether the given grid is solvable or not.
+ *
+ * @param grid The 2D array representing the grid.
+ */
+public static void solvability(int[][] grid) {
+    boolean solvable = isSolvable(grid);
+    System.out.println("The game is " + (solvable ? "solvable" : "not solvable"));
+}
+
 } 
