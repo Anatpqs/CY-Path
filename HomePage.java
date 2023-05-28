@@ -1,6 +1,6 @@
 package application;
+
 import java.io.IOException;
-import java.util.List;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.application.Application;
@@ -304,7 +304,7 @@ public class HomePage extends Application {
                 	try {
                 		TaquinFX.resolve();    
                 	} catch (OutOfMemoryError e) {
-                		Label label = new Label("Erreur memoire lors de la recherche de solution"); //creation message and set color red
+                		Label label = new Label("Erreur mémoire lors de la recherche de solution"); //creation message and set color red
                 		label.setTextFill(Color.RED);
                 		label.setFont(new Font(17));
                 		 VBox root = new VBox(label);
@@ -474,11 +474,10 @@ public class HomePage extends Application {
 		label.setTextFill(Color.RED);
 		label.setFont(new Font(20));
 		TaquinFX.gridPane.add(label, 0, 15); // add the message
-		TaquinFX.gridPane.setColumnSpan(label, 3); // Specifies that nbTurns occupies 3 columns
+		GridPane.setColumnSpan(label, 3); // Specifies that nbTurns occupies 3 columns
 
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); //
         pause.setOnFinished(event -> TaquinFX.gridPane.getChildren().remove(label)); // after 1 seconde delete the message
         pause.play();
     }
-	
 }

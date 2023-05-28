@@ -7,7 +7,6 @@
 
 package application;
 
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -43,14 +42,13 @@ public class TaquinFX {
         grid = level.getGrid();
     }
     public static int score = 0;
-    private static Button button_resolve = new Button("Resolve");
     
     //Define level
     private static int NbrRow;
     private static int NbrCol;
     private static int[][] grid_level;
     public static boolean test_resolve=false;
-    public static String filePath = "/home/cytech/eclipse-workspace/testFX/src/level.txt";  //  /!\ /!\ To change depending on where you put level.txt
+    public static String filePath = "/home/cytech/eclipse-workspace/Slide_v4/src/application/level.txt";  //  /!\ /!\ To change depending on where you put level.txt
     
     public static void RUNstart() throws IOException {
     	List<Level> levels = ManageLevels.loadLevels(filePath);
@@ -64,7 +62,7 @@ public class TaquinFX {
      
         setGrid(level);
         displayGrid(level);
-	gridPane.setAlignment(Pos.CENTER);   
+        gridPane.setAlignment(Pos.CENTER);   
   
     } 
     
@@ -800,84 +798,81 @@ public class TaquinFX {
 
         return conflicts;
     }
-//-------------------------------------------------------------------------------------------------------------------------------------------------
 
-/**
- * Determines if a given grid is solvable.
- *
- * @param grid The 2D array representing the grid.
- * @return {@code true} if the grid is solvable, {@code false} otherwise.
- */
-public static boolean isSolvable(int[][] grid) {
-    int gridSize = NbrRow * NbrCol;
-    int[] flattenedGrid = flattenGrid(grid);
-    int inversions = countInversions(flattenedGrid);
-    int blankRow = findBlankRow(grid);
-
-    if (gridSize % 2 == 1) {
-        // For an odd-sized grid, the game is solvable if the number of inversions is even.
-        return inversions % 2 == 0;
-    } else {
-        // For an even-sized grid, the game is solvable if the following conditions are met:
-        // - the number of inversions is even
-        // - the row of the blank tile (counted from the bottom) is odd
-        return (inversions % 2 == 0) == (blankRow % 2 == 1);
-    }
-}
-
-/**
- * Flattens the 2D grid into a 1D array.
- *
- * @param grid The 2D array representing the grid.
- * @return The flattened grid as a 1D array.
- */
-private static int[] flattenGrid(int[][] grid) {
-    int gridSize = NbrRow * NbrCol;
-    int[] flattenedGrid = new int[gridSize];
-    int index = 0;
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
-            flattenedGrid[index] = grid[i][j];
-            index++;
-        }
-    }
-    return flattenedGrid;
-}
-
-/**
- * Counts the number of inversions in the flattened grid.
- *
- * @param flattenedGrid The flattened grid as a 1D array.
- * @return The number of inversions in the grid.
- */
-private static int countInversions(int[] flattenedGrid) {
-    int inversions = 0;
-    for (int i = 0; i < flattenedGrid.length - 1; i++) {
-        for (int j = i + 1; j < flattenedGrid.length; j++) {
-            if (flattenedGrid[i] > flattenedGrid[j] && flattenedGrid[i] != 0 && flattenedGrid[j] != 0) {
-                inversions++;
-            }
-        }
-    }
-    return inversions;
-}
-
-/**
- * Finds the row of the blank tile in the grid.
- *
- * @param grid The 2D array representing the grid.
- * @return The row of the blank tile (counted from the bottom). Returns -1 if the blank tile is not found.
- */
-private static int findBlankRow(int[][] grid) {
-    for (int i = grid.length - 1; i >= 0; i--) {
-        for (int j = 0; j < grid[0].length; j++) {
-            if (grid[i][j] == 0) {
-                return grid.length - i;
-            }
-        }
-    }
-    return -1; // Returns -1 if the blank tile is not found (this case should not occur)
-}
-
-
+	/**
+	 * Determines if a given grid is solvable.
+	 *
+	 * @param grid The 2D array representing the grid.
+	 * @return {@code true} if the grid is solvable, {@code false} otherwise.
+	 */
+	public static boolean isSolvable(int[][] grid) {
+	    int gridSize = NbrRow * NbrCol;
+	    int[] flattenedGrid = flattenGrid(grid);
+	    int inversions = countInversions(flattenedGrid);
+	    int blankRow = findBlankRow(grid);
+	
+	    if (gridSize % 2 == 1) {
+	        // For an odd-sized grid, the game is solvable if the number of inversions is even.
+	        return inversions % 2 == 0;
+	    } else {
+	        // For an even-sized grid, the game is solvable if the following conditions are met:
+	        // - the number of inversions is even
+	        // - the row of the blank tile (counted from the bottom) is odd
+	        return (inversions % 2 == 0) == (blankRow % 2 == 1);
+	    }
+	}
+	
+	/**
+	 * Flattens the 2D grid into a 1D array.
+	 *
+	 * @param grid The 2D array representing the grid.
+	 * @return The flattened grid as a 1D array.
+	 */
+	private static int[] flattenGrid(int[][] grid) {
+	    int gridSize = NbrRow * NbrCol;
+	    int[] flattenedGrid = new int[gridSize];
+	    int index = 0;
+	    for (int i = 0; i < grid.length; i++) {
+	        for (int j = 0; j < grid[0].length; j++) {
+	            flattenedGrid[index] = grid[i][j];
+	            index++;
+	        }
+	    }
+	    return flattenedGrid;
+	}
+	
+	/**
+	 * Counts the number of inversions in the flattened grid.
+	 *
+	 * @param flattenedGrid The flattened grid as a 1D array.
+	 * @return The number of inversions in the grid.
+	 */
+	private static int countInversions(int[] flattenedGrid) {
+	    int inversions = 0;
+	    for (int i = 0; i < flattenedGrid.length - 1; i++) {
+	        for (int j = i + 1; j < flattenedGrid.length; j++) {
+	            if (flattenedGrid[i] > flattenedGrid[j] && flattenedGrid[i] != 0 && flattenedGrid[j] != 0) {
+	                inversions++;
+	            }
+	        }
+	    }
+	    return inversions;
+	}
+	
+	/**
+	 * Finds the row of the blank tile in the grid.
+	 *
+	 * @param grid The 2D array representing the grid.
+	 * @return The row of the blank tile (counted from the bottom). Returns -1 if the blank tile is not found.
+	 */
+	private static int findBlankRow(int[][] grid) {
+	    for (int i = grid.length - 1; i >= 0; i--) {
+	        for (int j = 0; j < grid[0].length; j++) {
+	            if (grid[i][j] == 0) {
+	                return grid.length - i;
+	            }
+	        }
+	    }
+	    return -1; // Returns -1 if the blank tile is not found (this case should not occur)
+	}
 } 
