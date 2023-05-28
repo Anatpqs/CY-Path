@@ -25,4 +25,4 @@ or square by square.
 - You can play with your mouse or keyboard: simply select the square with the arrow keys, then press space or enter.
                     
 ## Javadoc
-Open the file "application"
+To access the Javadoc go to the folder `javadoc/application`
