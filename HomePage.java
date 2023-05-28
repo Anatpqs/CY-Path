@@ -1,5 +1,4 @@
 package application;
-
 import java.io.IOException;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -9,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
@@ -20,7 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
-import javafx.geometry.Pos;
+
 
 /**
  * class that will generate the game menu and the game board on the same window
@@ -76,6 +76,9 @@ public class HomePage extends Application {
      * Title for the number of move
      */
     private static Text nbTurns = new Text(20, 100, "NB TURNS");
+    /**
+     * number of move
+     */
     public static int numberMove = 0;
     /**
      * Number of move
@@ -95,7 +98,6 @@ public class HomePage extends Application {
      * start function which starts the project and creates the main window
      * 
      * @param primaryStage main window
-     * @throws exceptions by printing the stack trace
      */
     @Override
     public void start(Stage primaryStage) {
@@ -190,7 +192,7 @@ public class HomePage extends Application {
             // Rules
             buttonRules.setGraphic(ViewPictureRules);
             buttonRules.setStyle("-fx-background-color: black"); 
-            buttonRules.setOnAction(event -> {
+            buttonRules.setOnAction(event -> { //rules
                 Label label = new Label("Le taquin\n"
                         + "Le taquin est un jeu qui a été inventé vers 1870 aux États-Unis.\n"
                         + "Règles :\n"
@@ -314,8 +316,7 @@ public class HomePage extends Application {
                          rule.setScene(rulescene);
                          rule.show();
                          rule.setTitle("error");
-                	}                 
-		}
+                	}                 }
             });
             homepage.add(buttonResolve, 1,15);
             
@@ -389,10 +390,11 @@ public class HomePage extends Application {
     /**
      * Updates the display of the number of moves whenever a box is moved.
      * Removes the previous number and sets the new text number.
+     * @param move enter the new number of move
      */
-    public static void setNumberMove(int coup) {
+    public static void setNumberMove(int move) {
         homepage.getChildren().remove(NumberTurns); // remove previous number
-        NumberTurns.setText(Integer.toString(coup)); // create the new text number
+        NumberTurns.setText(Integer.toString(move)); // create the new text number
         NumberTurns.setFont(new Font(75));
         NumberTurns.setFill(Color.WHITE);
         GridPane.setHalignment(NumberTurns, HPos.CENTER);
@@ -418,7 +420,6 @@ public class HomePage extends Application {
      * Updates the display of the score whenever the level changes.
      * Removes the previous number and sets the new text number.
      * 
-     * @throws IOException if an error occurs while reading the file
      */
     public static void setScore() {
         homepage.getChildren().remove(NumberRecord); // remove previous number
@@ -447,7 +448,6 @@ public class HomePage extends Application {
      * Changes the appearance of the game board when the player wins the level.
      * Clears the game board and creates a new one with buttons colored green.
      * 
-     * @throws IOException if an error occurs while reading the file
      */
     public static void victory() {
         TaquinFX.gridPane.getChildren().clear(); // remove previous number
@@ -480,4 +480,5 @@ public class HomePage extends Application {
         pause.setOnFinished(event -> TaquinFX.gridPane.getChildren().remove(label)); // after 1 seconde delete the message
         pause.play();
     }
+	
 }

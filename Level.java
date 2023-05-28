@@ -29,6 +29,8 @@ public class Level {
      * <p> Method that set the value of the selected tile.
      * 
      * @param value : new value of the tile
+     * @param row : number of row in the level
+     * @param column : number of column in the level
      */
     public void setTile(int row, int column, int value) {
         grid[row][column] = value;
@@ -83,9 +85,11 @@ public class Level {
     }
     /**
      * Set the score
-     * @param score
+     * @param score actual record
      */
     public void setScore(int score) {
         this.score = score;
-    }    
+    }   
+
 }
+
