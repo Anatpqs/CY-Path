@@ -16,10 +16,10 @@ GRANDJEAN Théo ; BOCQ Andrew ; GOSSELIN Julian ; PAQUES Anatole ; JUMEL Paul
 - There are several levels, and to access them, you must pass the current level!
 - At the beginning, the level is in its final position. To start it, click <img src="Reset.png" width="30" height="30"> and select your mix type.
 Then solve the riddle!
-- If you get stuck, you can always click on the light bulb, which will solve the puzzle step by step. There's automatic solving, 
+- If you get stuck, you can always click on the light bulb <img src="resolve.png" width="30" height="30">, which will solve the puzzle step by step. There's automatic solving, 
 or square by square.
 - But be careful!!! The light bulb will not validate the level.
-- If the level is finished, the game board will turn green. To restart the level, press the Shuffle button again.
+- If the level is finished, the game board will turn green. To restart the level, press the Shuffle <img src="Reset.png" width="30" height="30"> button again.
 - Black squares are forbidden: you can't go on them.
 - You can play with your mouse or keyboard: simply select the square with the arrow keys, then press space or enter.
                     
