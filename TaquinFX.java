@@ -50,7 +50,7 @@ public class TaquinFX {
     private static int NbrCol;
     private static int[][] grid_level;
     public static boolean test_resolve=false;
-    public static String filePath = "/home/cytech/eclipse-workspace/testFX/src/level.txt";  //  /!\ /!\ /!\ A changer en fonction de là où vous placer level.txt
+    public static String filePath = "/home/cytech/eclipse-workspace/testFX/src/level.txt";  //  /!\ /!\ To change depending on where you put level.txt
     
     public static void RUNstart() throws IOException {
     	List<Level> levels = ManageLevels.loadLevels(filePath);
@@ -61,20 +61,11 @@ public class TaquinFX {
         NbrCol = level.getColumn();
         grid_level=copyMatrix(level.getGrid());
         score=level.getScore();
-        
-        // Boutton pour résoudre
-        //gridPane.add(button_resolve,0,NbrCol+1);
-      
-        
+     
         setGrid(level);
-        
-	    displayGrid(level);
-	    
-        
-	    gridPane.setAlignment(Pos.CENTER);   
-       
-      
-
+        displayGrid(level);
+	gridPane.setAlignment(Pos.CENTER);   
+  
     } 
     
     /**
@@ -86,10 +77,10 @@ public class TaquinFX {
     public static void displayGrid(Level level) {
     	setGrid(level);
         
-        // Supprime les Ã©lÃ©ments de la grid prÃ©cÃ©dente
-        //gridPane.getChildren().clear();
+        //Removes previous grid items
         
-        // Adjuste la taille de la fenÃªtre suivant la taille de la grid
+       // Adjust window size according to grid size
+
         gridPane.setPrefSize(NbrCol * TILE_SIZE, NbrRow * TILE_SIZE);        
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
@@ -609,7 +600,7 @@ public class TaquinFX {
             int temp = grid_temp3[emptyRow + 1][emptyCol];
             grid_temp3[emptyRow + 1][emptyCol] = 0;
             grid_temp3[emptyRow][emptyCol] = temp;
-            //Ajout à la liste des possibilité
+           //Add to the list of possibilities
             next_state.add(grid_temp3);
         	}
         }
@@ -622,7 +613,7 @@ public class TaquinFX {
             int temp = grid_temp4[emptyRow][emptyCol - 1];
             grid_temp4[emptyRow][emptyCol - 1] = 0;
             grid_temp4[emptyRow][emptyCol] = temp;
-            //Ajout à la liste des possibilité
+            //Add to the list of possibilities
             next_state.add(grid_temp4);
         	}
         }
@@ -636,7 +627,7 @@ public class TaquinFX {
             int temp = grid_temp5[emptyRow][emptyCol + 1];
             grid_temp5[emptyRow][emptyCol + 1] = 0;
             grid_temp5[emptyRow][emptyCol] = temp;
-            //Ajout à la liste des possibilité
+            //Add to the list of possibilities
             next_state.add(grid_temp5);
         	}
         }
