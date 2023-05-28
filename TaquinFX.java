@@ -422,8 +422,9 @@ public class TaquinFX {
      */
     static void refreshUI1() {
         gridPane.getChildren().clear(); // Clear all nodes from the current grid
+        do {
         shuffle1(); // Shuffle the tiles in the grid with shuffle 1
-
+        } while (isSolvable(grid) == false); //This loop produces a solvent shuffle
         // Iterate over each row and column in the grid
         for (int row = 0; row < NbrRow; row++) {
             for (int col = 0; col < NbrCol; col++) {
@@ -444,7 +445,6 @@ public class TaquinFX {
                 }
             }
         }
-        gridPane.add(button_resolve, 0, NbrCol + 1); // Add the solve button at a specific position in the gridPane
     }
 
     
@@ -470,7 +470,6 @@ public class TaquinFX {
                 }
             }
         }
-        gridPane.add(button_resolve,0,NbrCol+1);
     }
     
    /**
