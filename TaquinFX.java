@@ -64,7 +64,6 @@ public class TaquinFX {
         
         // Boutton pour résoudre
         //gridPane.add(button_resolve,0,NbrCol+1);
-        button_resolve.setOnAction(e->solvability());
       
         
         setGrid(level);
