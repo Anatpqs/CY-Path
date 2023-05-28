@@ -890,14 +890,5 @@ private static int findBlankRow(int[][] grid) {
     return -1; // Returns -1 if the blank tile is not found (this case should not occur)
 }
 
-/**
- * Prints whether the given grid is solvable or not.
- *
- * @param grid The 2D array representing the grid.
- */
-public static void solvability(int[][] grid) {
-    boolean solvable = isSolvable(grid);
-    System.out.println("The game is " + (solvable ? "solvable" : "not solvable"));
-}
 
 } 
