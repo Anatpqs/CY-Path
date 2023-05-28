@@ -304,7 +304,7 @@ public class HomePage extends Application {
                 	try {
                 		TaquinFX.resolve();    
                 	} catch (OutOfMemoryError e) {
-                		Label label = new Label("Erreur mémoire lors de la recherche de solution"); //creation message and set color red
+                		Label label = new Label("Erreur memoire lors de la recherche de solution"); //creation message and set color red
                 		label.setTextFill(Color.RED);
                 		label.setFont(new Font(17));
                 		 VBox root = new VBox(label);
